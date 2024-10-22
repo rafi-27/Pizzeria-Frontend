@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.ui.Alignment
@@ -31,7 +34,12 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String){
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         label = { Text(label) },
-        trailingIcon = {},
+        trailingIcon = {if (teclado == KeyboardType.Password)
+            Icon(
+            modifier = Modifier.size(100.dp),
+            imageVector = Icons.Filled.Favorite,
+            contentDescription = ""
+        ) },
         onValueChange = {}
     )
 }
