@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.ui.data
+package com.example.pizzeriathiar.data
 
 data class Ingrediente(
     val id:Int,

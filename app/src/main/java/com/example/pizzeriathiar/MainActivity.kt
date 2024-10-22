@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.pizzeriathiar.ui.registro.PantallaRegistro
+import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 import com.example.pizzeriathiar.ui.theme.PizzeriaThiarTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,14 +20,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PizzeriaThiarTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+//            PizzeriaThiarTheme {
+//
+//            }
+            PantallaRegistro(RegistroViewModel())
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.ui.data
+package com.example.pizzeriathiar.data
 
 data class BebidaDTO(
     val id:Int,

@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.ui.data
+package com.example.pizzeriathiar.data
 
 /**
  * (1 punto) Ejercicio 2. Crea una clase KebabDTO, que sea coherente con el
