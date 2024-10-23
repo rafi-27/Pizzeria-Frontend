@@ -9,12 +9,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,21 +24,27 @@ import androidx.compose.ui.unit.dp
 import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.ClienteDTO
 import androidx.compose.runtime.livedata.observeAsState
-
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 
 @Composable
 fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String){
+    var mostrar by remember { mutableStateOf(Icons.Filled.VisibilityOff) }
     OutlinedTextField(
         value = "",
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         label = { Text(label) },
         trailingIcon = {if (teclado == KeyboardType.Password)
-            IconButton(onClick = {}) { Icon(
-                imageVector = Icons.Filled.Visibility,
+            IconButton(onClick = {
+                if (mostrar == Icons.Filled.VisibilityOff) mostrar = Icons.Filled.Visibility else mostrar = Icons.Filled.VisibilityOff
+            }) {
+                Icon(
+                imageVector = mostrar,
                 contentDescription = "")}},
-        onValueChange = {}
+                onValueChange = {}
     )
 }
 
