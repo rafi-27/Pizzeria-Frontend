@@ -8,6 +8,9 @@ class RegistroViewModel:ViewModel() {
     val clienteDTO = MutableLiveData<ClienteDTO>()
 
     //Funcion para concatenar
-    fun onTextoChange(newText:String){}
+    fun onClienteChange(newCliente:ClienteDTO){
+        clienteDTO.value=newCliente;
+    }
+
 
 }

@@ -30,21 +30,25 @@ import androidx.compose.runtime.setValue
 
 
 @Composable
-fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String){
+fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String){
     var mostrar by remember { mutableStateOf(Icons.Filled.VisibilityOff) }
     OutlinedTextField(
-        value = "",
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
         modifier = Modifier.fillMaxWidth().padding(16.dp),
         label = { Text(label) },
         trailingIcon = {if (teclado == KeyboardType.Password)
             IconButton(onClick = {
-                if (mostrar == Icons.Filled.VisibilityOff) mostrar = Icons.Filled.Visibility else mostrar = Icons.Filled.VisibilityOff
+                if (mostrar == Icons.Filled.VisibilityOff) { mostrar = Icons.Filled.Visibility
+                } else{ mostrar = Icons.Filled.VisibilityOff
+                    val numeroAsteriscos = valor.length
+
+                }
             }) {
                 Icon(
                 imageVector = mostrar,
                 contentDescription = "")}},
-                onValueChange = {}
+        onValueChange = onClietneChange,
+        value = valor
     )
 }
 
@@ -61,12 +65,12 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
                 contentDescription = ""
             )
 
-            TextoField(KeyboardType.Text,"Nombre")
-            TextoField(KeyboardType.Text,"DNI")
-            TextoField(KeyboardType.Text,"Direccion")
-            TextoField(KeyboardType.Number,"Telefono")
-            TextoField(KeyboardType.Text,"Email")
-            TextoField(KeyboardType.Password,"Password")
+            TextoField(KeyboardType.Text,"Nombre",{registroViewModel.onClienteChange(cliente.copy(nombre = it))},cliente.nombre)
+            TextoField(KeyboardType.Text,"DNI",{registroViewModel.onClienteChange(cliente.copy(dni = it))},cliente.dni)
+            TextoField(KeyboardType.Text,"Direccion",{registroViewModel.onClienteChange(cliente.copy(direccion = it))},cliente.direccion)
+            TextoField(KeyboardType.Number,"Telefono",{registroViewModel.onClienteChange(cliente.copy(telefono = it))},cliente.telefono)
+            TextoField(KeyboardType.Text,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email)
+            TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password)
 
             Button(onClick = {}, modifier = Modifier.fillMaxWidth().padding(80.dp)) { Text("Registar") }
 
