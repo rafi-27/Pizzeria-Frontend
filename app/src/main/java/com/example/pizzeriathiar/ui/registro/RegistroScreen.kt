@@ -27,22 +27,26 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 
 
 @Composable
 fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String){
     var mostrar by remember { mutableStateOf(Icons.Filled.VisibilityOff) }
+    var hidden by remember { mutableStateOf(false) }
+
     OutlinedTextField(
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         label = { Text(label) },
+        visualTransformation = if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {if (teclado == KeyboardType.Password)
             IconButton(onClick = {
-                if (mostrar == Icons.Filled.VisibilityOff) { mostrar = Icons.Filled.Visibility
-                } else{ mostrar = Icons.Filled.VisibilityOff
-                    val numeroAsteriscos = valor.length
-
-                }
+                if (mostrar == Icons.Filled.VisibilityOff) { mostrar = Icons.Filled.Visibility; hidden = false
+                } else{ mostrar = Icons.Filled.VisibilityOff; hidden = true}
             }) {
                 Icon(
                 imageVector = mostrar,
@@ -56,11 +60,14 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
 @Composable
 fun PantallaRegistro(registroViewModel: RegistroViewModel){
     val cliente: ClienteDTO by registroViewModel.clienteDTO.observeAsState(ClienteDTO())
-
+    val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     LazyColumn {
         item {
             Image(
-                modifier = Modifier.fillMaxWidth().size(300.dp).padding(top = 50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(300.dp)
+                    .padding(top = 50.dp),
                 painter = painterResource(R.drawable.logo),
                 contentDescription = ""
             )
@@ -72,7 +79,9 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
             TextoField(KeyboardType.Text,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email)
             TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password)
 
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth().padding(80.dp)) { Text("Registar") }
+            Button(onClick = {}, modifier = Modifier
+                .fillMaxWidth()
+                .padding(80.dp), enabled = encender) { Text("Registar")}
 
         }
     }
