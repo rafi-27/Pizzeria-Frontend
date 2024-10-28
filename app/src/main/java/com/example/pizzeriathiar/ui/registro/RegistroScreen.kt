@@ -94,7 +94,6 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
             Button(onClick = {}, modifier = Modifier
                 .fillMaxWidth()
                 .padding(80.dp), enabled = encender) { Text("Registar")}
-
         }
     }
 }

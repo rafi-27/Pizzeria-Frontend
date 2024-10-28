@@ -22,10 +22,6 @@ class RegistroViewModel:ViewModel() {
             botonEncendido.value = false
         }else{botonEncendido.value=true}
 
-
-
-
-
         clienteDTO.value=newCliente;
     }
 }
