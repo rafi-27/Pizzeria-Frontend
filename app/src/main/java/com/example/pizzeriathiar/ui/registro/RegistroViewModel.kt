@@ -14,7 +14,7 @@ class RegistroViewModel:ViewModel() {
     fun onClienteChange(newCliente:ClienteDTO){
         mensajeDeError.value = ErrorMessege(
             nombre = if (newCliente.nombre.any{it.isDigit()}) "El nombre no puede tener digitos." else "",
-            email = if (newCliente.email.matches(Regex("\"^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}\$\""))) "Correo invalido" else "",
+            email = if (!newCliente.email.matches(Regex("^[\\w.-]+@[\\w-]+\\.[A-Za-z]{2,4}$"))) "Correo invalido" else "",
             password = if (newCliente.password.length<4)"La contraseña debe tener una longitud igual o mayor a 4" else ""
         )
 
