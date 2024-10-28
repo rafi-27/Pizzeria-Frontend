@@ -3,16 +3,28 @@ package com.example.pizzeriathiar.ui.registro
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pizzeriathiar.data.ClienteDTO
+import com.example.pizzeriathiar.data.ErrorMessege
 
 class RegistroViewModel:ViewModel() {
     val clienteDTO = MutableLiveData<ClienteDTO>()
     val botonEncendido = MutableLiveData(false)
+    val mensajeDeError = MutableLiveData<ErrorMessege>()
 
     //Funcion para concatenar
     fun onClienteChange(newCliente:ClienteDTO){
+        mensajeDeError.value = ErrorMessege(
+            nombre = if (newCliente.nombre.any{it.isDigit()}) "El nombre no puede tener digitos." else "",
+            email = if (newCliente.email.matches(Regex("\"^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}\$\""))) "Correo invalido" else "",
+            password = if (newCliente.password.length<4)"La contraseña debe tener una longitud igual o mayor a 4" else ""
+        )
+
         if (newCliente.nombre.isBlank()||newCliente.dni.isBlank()||newCliente.direccion.isBlank()||newCliente.telefono.isBlank()||newCliente.email.isBlank()||newCliente.password.isBlank()) {
             botonEncendido.value = false
         }else{botonEncendido.value=true}
+
+
+
+
 
         clienteDTO.value=newCliente;
     }

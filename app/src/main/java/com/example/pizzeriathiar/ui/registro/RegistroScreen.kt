@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -29,12 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.example.pizzeriathiar.data.ErrorMessege
 
 
 @Composable
-fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String){
+fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String,error:String=""){
     var mostrar by remember { mutableStateOf(Icons.Filled.VisibilityOff) }
     var hidden by remember { mutableStateOf(false) }
+
 
     OutlinedTextField(
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
@@ -54,6 +57,11 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
         onValueChange = onClietneChange,
         value = valor
     )
+    Text(
+        color = MaterialTheme.colorScheme.error,
+        text = error,
+        modifier = Modifier.fillMaxWidth().padding(16.dp)
+    )
 }
 
 
@@ -61,6 +69,8 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
 fun PantallaRegistro(registroViewModel: RegistroViewModel){
     val cliente: ClienteDTO by registroViewModel.clienteDTO.observeAsState(ClienteDTO())
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
+    val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
+
     LazyColumn {
         item {
             Image(
@@ -71,13 +81,15 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
                 painter = painterResource(R.drawable.logo),
                 contentDescription = ""
             )
+            //Los errores tienen que estar en los siguentes campos:+
+            //nombre email y password
 
-            TextoField(KeyboardType.Text,"Nombre",{registroViewModel.onClienteChange(cliente.copy(nombre = it))},cliente.nombre)
+            TextoField(KeyboardType.Text,"Nombre",{registroViewModel.onClienteChange(cliente.copy(nombre = it))},cliente.nombre,errorTipo.nombre)
             TextoField(KeyboardType.Text,"DNI",{registroViewModel.onClienteChange(cliente.copy(dni = it))},cliente.dni)
             TextoField(KeyboardType.Text,"Direccion",{registroViewModel.onClienteChange(cliente.copy(direccion = it))},cliente.direccion)
             TextoField(KeyboardType.Number,"Telefono",{registroViewModel.onClienteChange(cliente.copy(telefono = it))},cliente.telefono)
-            TextoField(KeyboardType.Text,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email)
-            TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password)
+            TextoField(KeyboardType.Email,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email,errorTipo.email)
+            TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password,errorTipo.password)
 
             Button(onClick = {}, modifier = Modifier
                 .fillMaxWidth()

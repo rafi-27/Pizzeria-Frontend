@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
             PizzeriaThiarTheme {
                 PantallaRegistro(RegistroViewModel())
             }
-
         }
     }
 }
