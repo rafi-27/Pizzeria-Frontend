@@ -35,24 +35,20 @@ import com.example.pizzeriathiar.data.ErrorMessege
 
 @Composable
 fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String,error:String=""){
-    var mostrar by remember { mutableStateOf(Icons.Filled.VisibilityOff) }
-    var hidden by remember { mutableStateOf(false) }
-
+    var hidden by remember { mutableStateOf(true) }
 
     OutlinedTextField(
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth().padding(4.dp),
         label = { Text(label) },
-        visualTransformation = if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
+        visualTransformation = if (teclado == KeyboardType.Password && hidden) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {if (teclado == KeyboardType.Password)
             IconButton(onClick = {
-                if (mostrar == Icons.Filled.VisibilityOff) { mostrar = Icons.Filled.Visibility; hidden = false
-                } else{ mostrar = Icons.Filled.VisibilityOff; hidden = true}
+                if (hidden){hidden = false}else{hidden=true}
             }) {
                 Icon(
-                imageVector = mostrar,
+                imageVector = if (hidden) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                 contentDescription = "")}},
         onValueChange = onClietneChange,
         value = valor
@@ -60,7 +56,7 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
     Text(
         color = MaterialTheme.colorScheme.error,
         text = error,
-        modifier = Modifier.fillMaxWidth().padding(16.dp)
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
