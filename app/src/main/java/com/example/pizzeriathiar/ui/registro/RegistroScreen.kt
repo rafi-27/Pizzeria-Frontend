@@ -1,6 +1,9 @@
 package com.example.pizzeriathiar.ui.registro
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,8 +31,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.sp
 import com.example.pizzeriathiar.data.ErrorMessege
 
 
@@ -39,8 +44,7 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
 
     OutlinedTextField(
         keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
-        modifier = Modifier
-            .fillMaxWidth().padding(4.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp, horizontal = 16.dp),
         label = { Text(label) },
         visualTransformation = if (teclado == KeyboardType.Password && hidden) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {if (teclado == KeyboardType.Password)
@@ -56,7 +60,8 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
     Text(
         color = MaterialTheme.colorScheme.error,
         text = error,
-        modifier = Modifier.fillMaxWidth()
+        fontSize = 12.sp,
+        modifier = Modifier.fillMaxWidth().padding(top = 2.dp).padding(horizontal = 16.dp)
     )
 }
 
@@ -67,7 +72,7 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
 
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize().background(color = (MaterialTheme.colorScheme.background))) {
         item {
             Image(
                 modifier = Modifier
@@ -87,7 +92,9 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
             TextoField(KeyboardType.Email,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email,errorTipo.email)
             TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password,errorTipo.password)
 
-            Button(onClick = {}, modifier = Modifier
+            Button(onClick = {
+                Log.d("Boton registrar","Cliente: "+cliente.nombre+" "+cliente.dni+" "+cliente.direccion+" "+cliente.telefono+" "+cliente.email+" "+cliente.password)
+            }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(80.dp), enabled = encender) { Text("Registar")}
         }
