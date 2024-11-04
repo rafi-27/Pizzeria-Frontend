@@ -50,9 +50,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel) {
             TextoField(KeyboardType.Email, "Email", { loginViewModel.onClienteChange(clienteLogin.copy(email = it)) }, clienteLogin.email)
             TextoField(KeyboardType.Password, "Password", { loginViewModel.onClienteChange(clienteLogin.copy(password = it)) }, clienteLogin.password)
 
-            Button(onClick = {
-                Log.d("Boton login","Cliente: "+clienteLogin.email+" "+clienteLogin.password)
-            }, modifier = Modifier.fillMaxWidth().padding(80.dp), enabled = encender) { Text("Login") }
+            Button(onClick = {loginViewModel.onRegistrarClick()}, modifier = Modifier.fillMaxWidth().padding(80.dp), enabled = encender) { Text("Login") }
         }
     }
 }

@@ -23,8 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PizzeriaThiarTheme {
-                //PantallaRegistro(RegistroViewModel())
-                PantallaLogin(LoginViewModel())
+                PantallaRegistro(RegistroViewModel())
+                //PantallaLogin(LoginViewModel())
             }
         }
     }

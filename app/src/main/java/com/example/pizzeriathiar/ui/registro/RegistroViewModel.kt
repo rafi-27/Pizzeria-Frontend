@@ -1,5 +1,6 @@
 package com.example.pizzeriathiar.ui.registro
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pizzeriathiar.data.ClienteDTO
@@ -23,5 +24,9 @@ class RegistroViewModel:ViewModel() {
         }else{botonEncendido.value=true}
 
         clienteDTO.value=newCliente;
+    }
+
+    fun onRegistrarClick(){
+        Log.d("Botonregistrar","Cliente: ${clienteDTO.value}")
     }
 }

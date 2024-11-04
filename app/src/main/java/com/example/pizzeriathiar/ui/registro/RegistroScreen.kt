@@ -92,9 +92,7 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
             TextoField(KeyboardType.Email,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email,errorTipo.email)
             TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password,errorTipo.password)
 
-            Button(onClick = {
-                Log.d("Boton registrar","Cliente: "+cliente.nombre+" "+cliente.dni+" "+cliente.direccion+" "+cliente.telefono+" "+cliente.email+" "+cliente.password)
-            }, modifier = Modifier
+            Button(onClick = {registroViewModel.onRegistrarClick()}, modifier = Modifier
                 .fillMaxWidth()
                 .padding(80.dp), enabled = encender) { Text("Registar")}
         }
