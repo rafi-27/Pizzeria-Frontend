@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.PizzeriaThiarTheme
+import com.example.pizzeriathiar.ui.home.HomeViewModel
+import com.example.pizzeriathiar.ui.home.PantallaProducto
 import com.example.pizzeriathiar.ui.login.LoginViewModel
 import com.example.pizzeriathiar.ui.login.PantallaLogin
 import com.example.pizzeriathiar.ui.registro.PantallaRegistro
@@ -23,8 +25,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PizzeriaThiarTheme {
-                PantallaRegistro(RegistroViewModel())
+                //PantallaRegistro(RegistroViewModel())
                 //PantallaLogin(LoginViewModel())
+                PantallaProducto(HomeViewModel())
             }
         }
     }
