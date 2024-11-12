@@ -44,8 +44,11 @@ import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 @Composable
 fun PantallaProducto(homeViewModel: HomeViewModel) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(initial = emptyList())
+    val listaPizzas = listaProductos.filter { it.tipo==TipoProducto.PIZZA }
+    val listaPastas = listaProductos.filter { it.tipo==TipoProducto.PASTA }
+    val listaBebidas = listaProductos.filter { it.tipo==TipoProducto.BEBIDA }
 
-    var listaProductosCargada: List<ProductoDTO> = homeViewModel.cargarProductos()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -76,14 +79,10 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
         }
 
-        items(listaProductosCargada) { producto ->
-            if (producto.tipo == TipoProducto.PIZZA) {
-                ProductoItem(producto, R.drawable.kebabpizza)
-            } else if (producto.tipo == TipoProducto.PASTA) {
-                ProductoItem(producto, R.drawable.pasta)
-            } else {
-                ProductoItem(producto, R.drawable.powerking)
-            }
+        item { Text(text = "Pizzas") }
+
+        items(listaPizzas) { producto ->
+            ProductoItem(producto, R.drawable.kebabpizza)
         }
 
     }
@@ -92,7 +91,8 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 @Composable
 fun ProductoItem(producto: ProductoDTO, foto: Int) {
-    var cantidad:Int=1
+    var cantidad: remember by (mutableSetOf(1))
+
     Card(
         modifier = Modifier
             .fillMaxSize()
