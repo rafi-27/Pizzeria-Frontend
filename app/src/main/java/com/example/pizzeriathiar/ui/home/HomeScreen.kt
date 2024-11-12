@@ -16,12 +16,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -43,7 +49,7 @@ import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 
 @Composable
 fun PantallaProducto(homeViewModel: HomeViewModel) {
-    val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(initial = emptyList())
+    val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
     val listaPizzas = listaProductos.filter { it.tipo==TipoProducto.PIZZA }
     val listaPastas = listaProductos.filter { it.tipo==TipoProducto.PASTA }
     val listaBebidas = listaProductos.filter { it.tipo==TipoProducto.BEBIDA }
@@ -79,11 +85,35 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
         }
 
-        item { Text(text = "Pizzas") }
+        item { Text(text = "Pizzas",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)) }
 
         items(listaPizzas) { producto ->
             ProductoItem(producto, R.drawable.kebabpizza)
         }
+
+        item { Text(text = "Pasta",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)) }
+
+        items(listaPastas) { producto ->
+            ProductoItem(producto, R.drawable.pasta)
+        }
+
+        item { Text(text = "Bebida",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
+        ) }
+
+        items(listaBebidas) { producto ->
+            ProductoItem(producto, R.drawable.powerking)
+        }
+
+
 
     }
 }
@@ -91,7 +121,9 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 @Composable
 fun ProductoItem(producto: ProductoDTO, foto: Int) {
-    var cantidad: remember by (mutableSetOf(1))
+    var cantidad by rememberSaveable  { mutableStateOf(1) }
+    var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
+    var desplegar by rememberSaveable { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -129,8 +161,7 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                         .fillMaxHeight()
                         .padding(top = 5.dp)
                 )
-                Row (modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically){
-                    Spacer(modifier = Modifier.width(16.dp))
+                Row (modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
                     TextButton(onClick = {if (cantidad>1){cantidad--} }) {
                         Text(
                             "-",
@@ -150,8 +181,22 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                             .padding(5.dp)
                     )
                     }
+                    if (producto.tipo==TipoProducto.PIZZA||producto.tipo==TipoProducto.BEBIDA){
+                        Column {
+                            TextButton(onClick = {desplegar=true}) { Text(text = selectSize) }
+                            DropdownMenu(expanded = desplegar, onDismissRequest = {desplegar=false}) {
+                                DropdownMenuItem(onClick = {selectSize="GRANDE"}, text = {Text(SIZE.GRANDE.toString())})
+                                DropdownMenuItem(onClick = {selectSize="MEDIANA"}, text = {Text(SIZE.MEDIANA.toString())})
+                                DropdownMenuItem(onClick = {selectSize="PEQUEÑA"}, text = { Text(SIZE.PEQUEÑA.toString())})
+                            }
+                        }
+                    }
 
-                    TextButton(onClick = {}) {  }
+                    TextButton(onClick = {}) {
+                        Text(text = "+",
+                        fontSize = 20.sp) }
+
+
                 }
 
             }
