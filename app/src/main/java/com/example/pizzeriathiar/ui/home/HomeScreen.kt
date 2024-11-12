@@ -56,7 +56,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.Center
             ) {
                 Image(
                     painter = painterResource(R.drawable.logo),
@@ -68,9 +68,9 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
                 Text(
                     text = "LA PIZZA DEL SULTAN",
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth()
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
                 )
             }
 
@@ -92,7 +92,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 @Composable
 fun ProductoItem(producto: ProductoDTO, foto: Int) {
-    var cantidad:Int=0
+    var cantidad:Int=1
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -129,9 +129,9 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                         .fillMaxHeight()
                         .padding(top = 5.dp)
                 )
-                Row (modifier = Modifier.fillMaxSize()){
+                Row (modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically){
                     Spacer(modifier = Modifier.width(16.dp))
-                    TextButton(onClick = {}) {
+                    TextButton(onClick = {if (cantidad>1){cantidad--} }) {
                         Text(
                             "-",
                             textAlign = TextAlign.Left,
@@ -140,9 +140,8 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                                 .padding(5.dp)
                         )
                     }
-                    //Spacer(modifier = Modifier.width(16.dp))
                     Text(text=""+cantidad)
-                    TextButton(onClick = {}) {
+                    TextButton(onClick = {cantidad++}) {
                         Text(
                         "+",
                         textAlign = TextAlign.Left,
@@ -151,6 +150,8 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                             .padding(5.dp)
                     )
                     }
+
+                    TextButton(onClick = {}) {  }
                 }
 
             }
