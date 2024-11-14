@@ -10,17 +10,25 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -47,12 +55,13 @@ import com.example.pizzeriathiar.ui.registro.PantallaRegistro
 import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaProducto(homeViewModel: HomeViewModel) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
-    val listaPizzas = listaProductos.filter { it.tipo==TipoProducto.PIZZA }
-    val listaPastas = listaProductos.filter { it.tipo==TipoProducto.PASTA }
-    val listaBebidas = listaProductos.filter { it.tipo==TipoProducto.BEBIDA }
+    val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.PIZZA }
+    val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
+    val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
 
 
     LazyColumn(
@@ -61,58 +70,79 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             .background(color = (MaterialTheme.colorScheme.background))
     ) {
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .align(Alignment.CenterVertically)
-                )
-
-                Text(
-                    text = "LA PIZZA DEL SULTAN",
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
-                )
-            }
-
+            TopAppBar(modifier = Modifier.fillMaxWidth(),
+                title = {
+                    Image(
+                        painter = painterResource(R.drawable.logo),
+                        contentDescription = "",
+                        modifier = Modifier.size(50.dp).padding(end = 8.dp)
+                    )
+                    //Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 24.dp))
+                },
+                actions = {
+                    BadgedBox(
+                        badge = {
+                            Badge {
+                                Text(
+                                    text = "5"
+                                )
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = "Carrito"
+                        )
+                    }
+                }
+            )
         }
 
-        item { Text(text = "Pizzas",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Left,
-            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)) }
+        item {
+            Text(
+                text = "Pizzas",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            )
+        }
 
         items(listaPizzas) { producto ->
             ProductoItem(producto, R.drawable.kebabpizza)
         }
 
-        item { Text(text = "Pasta",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Left,
-            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)) }
+        item {
+            Text(
+                text = "Pasta",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            )
+        }
 
         items(listaPastas) { producto ->
             ProductoItem(producto, R.drawable.pasta)
         }
 
-        item { Text(text = "Bebida",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Left,
-            modifier = Modifier.fillMaxWidth().padding(top = 40.dp)
-        ) }
+        item {
+            Text(
+                text = "Bebida",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            )
+        }
 
         items(listaBebidas) { producto ->
             ProductoItem(producto, R.drawable.powerking)
         }
-
 
 
     }
@@ -121,7 +151,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 @Composable
 fun ProductoItem(producto: ProductoDTO, foto: Int) {
-    var cantidad by rememberSaveable  { mutableStateOf(1) }
+    var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
 
@@ -161,8 +191,15 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                         .fillMaxHeight()
                         .padding(top = 5.dp)
                 )
-                Row (modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
-                    TextButton(onClick = {if (cantidad>1){cantidad--} }) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextButton(onClick = {
+                        if (cantidad > 1) {
+                            cantidad--
+                        }
+                    }) {
                         Text(
                             "-",
                             textAlign = TextAlign.Left,
@@ -171,30 +208,41 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                                 .padding(5.dp)
                         )
                     }
-                    Text(text=""+cantidad)
-                    TextButton(onClick = {cantidad++}) {
+                    Text(text = "" + cantidad)
+                    TextButton(onClick = { cantidad++ }) {
                         Text(
-                        "+",
-                        textAlign = TextAlign.Left,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(5.dp)
-                    )
+                            "+",
+                            textAlign = TextAlign.Left,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(5.dp)
+                        )
                     }
-                    if (producto.tipo==TipoProducto.PIZZA||producto.tipo==TipoProducto.BEBIDA){
+                    if (producto.tipo == TipoProducto.PIZZA || producto.tipo == TipoProducto.BEBIDA) {
                         Column {
-                            TextButton(onClick = {desplegar=true}) { Text(text = selectSize) }
-                            DropdownMenu(expanded = desplegar, onDismissRequest = {desplegar=false}) {
-                                DropdownMenuItem(onClick = {selectSize="GRANDE"}, text = {Text(SIZE.GRANDE.toString())})
-                                DropdownMenuItem(onClick = {selectSize="MEDIANA"}, text = {Text(SIZE.MEDIANA.toString())})
-                                DropdownMenuItem(onClick = {selectSize="PEQUEÑA"}, text = { Text(SIZE.PEQUEÑA.toString())})
+                            TextButton(onClick = { desplegar = true }) { Text(text = selectSize) }
+                            DropdownMenu(
+                                expanded = desplegar,
+                                onDismissRequest = { desplegar = false }) {
+                                DropdownMenuItem(
+                                    onClick = { selectSize = "GRANDE" },
+                                    text = { Text(SIZE.GRANDE.toString()) })
+                                DropdownMenuItem(
+                                    onClick = { selectSize = "MEDIANA" },
+                                    text = { Text(SIZE.MEDIANA.toString()) })
+                                DropdownMenuItem(
+                                    onClick = { selectSize = "PEQUEÑA" },
+                                    text = { Text(SIZE.PEQUEÑA.toString()) })
                             }
                         }
                     }
 
                     TextButton(onClick = {}) {
-                        Text(text = "+",
-                        fontSize = 20.sp) }
+                        Text(
+                            text = "+",
+                            fontSize = 20.sp
+                        )
+                    }
 
 
                 }
