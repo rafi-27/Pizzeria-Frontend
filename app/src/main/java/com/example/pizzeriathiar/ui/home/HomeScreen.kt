@@ -70,15 +70,18 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             .background(color = (MaterialTheme.colorScheme.background))
     ) {
         item {
-            TopAppBar(modifier = Modifier.fillMaxWidth(),
+            TopAppBar(modifier = Modifier.fillMaxSize(),
                 title = {
-                    Image(
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = "",
-                        modifier = Modifier.size(50.dp).padding(end = 8.dp)
-                    )
-                    //Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 24.dp))
+                    Row (verticalAlignment = Alignment.CenterVertically){
+                        Image(
+                            painter = painterResource(R.drawable.logo),
+                            contentDescription = "",
+                            modifier = Modifier.size(50.dp)
+                        )
+                        //Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 8.dp))
+                    }
+
                 },
                 actions = {
                     BadgedBox(
