@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -70,16 +71,18 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             .background(color = (MaterialTheme.colorScheme.background))
     ) {
         item {
-            TopAppBar(modifier = Modifier.fillMaxSize(),
+            TopAppBar(modifier = Modifier.fillMaxWidth(),
                 title = {
-                    Row (verticalAlignment = Alignment.CenterVertically){
+                    Row (verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
                         Image(
                             painter = painterResource(R.drawable.logo),
                             contentDescription = "",
                             modifier = Modifier.size(50.dp)
                         )
                         //Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 8.dp))
+                        Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 4.dp))
                     }
 
                 },
@@ -91,7 +94,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                                     text = "5"
                                 )
                             }
-                        }
+                        }, modifier = Modifier.padding(34.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.ShoppingCart,
@@ -106,7 +109,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             Text(
                 text = "Pizzas",
                 fontSize = 20.sp,
-                textAlign = TextAlign.Left,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp)
@@ -121,7 +124,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             Text(
                 text = "Pasta",
                 fontSize = 20.sp,
-                textAlign = TextAlign.Left,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp)
@@ -136,7 +139,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             Text(
                 text = "Bebida",
                 fontSize = 20.sp,
-                textAlign = TextAlign.Left,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp)
@@ -228,13 +231,16 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                                 expanded = desplegar,
                                 onDismissRequest = { desplegar = false }) {
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "GRANDE" },
+                                    onClick = { selectSize = "Grande"
+                                        desplegar = false },
                                     text = { Text(SIZE.GRANDE.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "MEDIANA" },
+                                    onClick = { selectSize = "Mediana"
+                                        desplegar = false},
                                     text = { Text(SIZE.MEDIANA.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "PEQUEÑA" },
+                                    onClick = { selectSize = "Pequeña"
+                                        desplegar = false},
                                     text = { Text(SIZE.PEQUEÑA.toString()) })
                             }
                         }
