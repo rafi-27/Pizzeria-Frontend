@@ -3,6 +3,7 @@ package com.example.pizzeriathiar.ui.home
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.pizzeriathiar.data.Ingrediente
+import com.example.pizzeriathiar.data.LineaPedidoDTO
 import com.example.pizzeriathiar.data.LoginDTO
 import com.example.pizzeriathiar.data.ProductoDTO
 import com.example.pizzeriathiar.data.SIZE
@@ -10,12 +11,13 @@ import com.example.pizzeriathiar.data.TipoProducto
 
 class HomeViewModel {
     val productosDTO = MutableLiveData<List<ProductoDTO>>()
+    var listaLineaDePedidos = MutableLiveData<List<LineaPedidoDTO>>()
+    var cantidadCarrito = MutableLiveData<Int>(0)
 
     init {
         cargarProductos()
     }
 
-    //:List<ProductoDTO>
     fun cargarProductos(){
         var listaProductos:List<ProductoDTO> = listOf(
             ProductoDTO(1,"Pizza kebab",15.0,SIZE.PEQUEÑA, listOf(Ingrediente(11,"Tomate", listOf()),Ingrediente(11,"Mozarella", listOf())),TipoProducto.PIZZA),
@@ -31,4 +33,9 @@ class HomeViewModel {
         productosDTO.value=listaProductos
     }
 
+    fun lineaPedidoFun(cantidad:Int,productoDTOParam: ProductoDTO,tam:SIZE){
+        productoDTOParam.tamanyo = tam
+        listaLineaDePedidos.value = listOf(LineaPedidoDTO(null, cantidad = cantidad, productoDTO = productoDTOParam))
+        cantidadCarrito.value = cantidadCarrito.value?.plus(cantidad)
+    }
 }

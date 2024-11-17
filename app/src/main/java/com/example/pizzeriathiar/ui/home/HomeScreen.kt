@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.Ingrediente
+import com.example.pizzeriathiar.data.LineaPedidoDTO
 import com.example.pizzeriathiar.data.PizzaDTO
 import com.example.pizzeriathiar.data.ProductoDTO
 import com.example.pizzeriathiar.data.SIZE
@@ -60,6 +61,8 @@ import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 @Composable
 fun PantallaProducto(homeViewModel: HomeViewModel) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
+    val listaLineaPedido: List<LineaPedidoDTO> by homeViewModel.listaLineaDePedidos.observeAsState(listOf())
+
     val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.PIZZA }
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
     val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
@@ -91,7 +94,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                         badge = {
                             Badge {
                                 Text(
-                                    text = "5"
+                                    text = ""+listaLineaPedido.sumOf {it.cantidad}
                                 )
                             }
                         }, modifier = Modifier.padding(34.dp)
@@ -156,10 +159,11 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int) {
+fun ProductoItem(producto: ProductoDTO, foto: Int,onLineaPedido -> ()) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
+
 
     Card(
         modifier = Modifier
