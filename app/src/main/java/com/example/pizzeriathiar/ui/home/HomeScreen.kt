@@ -159,7 +159,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int,onLineaPedido -> ()) {
+fun ProductoItem(producto: ProductoDTO, foto: Int) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
