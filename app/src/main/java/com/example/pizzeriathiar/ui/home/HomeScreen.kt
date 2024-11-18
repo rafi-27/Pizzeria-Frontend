@@ -161,7 +161,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (canti:Int,produ:ProductoDTO,tami:SIZE) -> Unit) {
+fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: () -> Unit) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
@@ -253,7 +253,7 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (canti:Int,prod
                         }
                     }
 
-                    TextButton(onClick = {onAddCarrito(cantidad, producto, producto.tamanyo)}) {
+                    TextButton(onClick = {onAddCarrito()}) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
