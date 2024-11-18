@@ -1,11 +1,11 @@
 package com.example.pizzeriathiar.data
 
-import java.time.LocalDateTime
+import java.util.Date
 
 data class PedidoDTO(
     val id:Int,
-    val fecha:LocalDateTime,
-    val precio:Double,
+    val fecha: Date,
+    val precioTotal:Double,
     val estado: EstadoPedido,
-    val listaLineaPedido:List<LineaPedidoDTO>
+    var listaLineaPedido:MutableList<LineaPedidoDTO>
 )

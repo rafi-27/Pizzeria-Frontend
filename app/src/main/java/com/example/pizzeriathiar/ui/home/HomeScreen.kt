@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.Ingrediente
 import com.example.pizzeriathiar.data.LineaPedidoDTO
+import com.example.pizzeriathiar.data.PedidoDTO
 import com.example.pizzeriathiar.data.PizzaDTO
 import com.example.pizzeriathiar.data.ProductoDTO
 import com.example.pizzeriathiar.data.SIZE
@@ -61,7 +62,8 @@ import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 @Composable
 fun PantallaProducto(homeViewModel: HomeViewModel) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
-    val listaLineaPedido: List<LineaPedidoDTO> by homeViewModel.listaLineaDePedidos.observeAsState(listOf())
+    val cantidad by homeViewModel.cantidadCarrito.observeAsState(0)
+
 
     val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.PIZZA }
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
@@ -84,7 +86,6 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                             contentDescription = "",
                             modifier = Modifier.size(50.dp)
                         )
-                        //Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 4.dp))
                     }
 
@@ -94,7 +95,8 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                         badge = {
                             Badge {
                                 Text(
-                                    text = ""+listaLineaPedido.sumOf {it.cantidad}
+                                    //text = ""+listaLineaPedido.sumOf {it.cantidad}
+                                    text = ""+cantidad
                                 )
                             }
                         }, modifier = Modifier.padding(34.dp)
@@ -120,7 +122,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPizzas) { producto ->
-            ProductoItem(producto, R.drawable.kebabpizza)
+            ProductoItem(producto, R.drawable.kebabpizza,{homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
         }
 
         item {
@@ -135,7 +137,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPastas) { producto ->
-            ProductoItem(producto, R.drawable.pasta)
+            ProductoItem(producto, R.drawable.pasta, {homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
         }
 
         item {
@@ -150,7 +152,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaBebidas) { producto ->
-            ProductoItem(producto, R.drawable.powerking)
+            ProductoItem(producto, R.drawable.powerking, {homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
         }
 
 
@@ -159,7 +161,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int) {
+fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (canti:Int,produ:ProductoDTO,tami:SIZE) -> Unit) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
@@ -235,7 +237,8 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                                 expanded = desplegar,
                                 onDismissRequest = { desplegar = false }) {
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "Grande"
+                                    onClick = {
+                                        selectSize = "Grande"
                                         desplegar = false },
                                     text = { Text(SIZE.GRANDE.toString()) })
                                 DropdownMenuItem(
@@ -250,7 +253,7 @@ fun ProductoItem(producto: ProductoDTO, foto: Int) {
                         }
                     }
 
-                    TextButton(onClick = {}) {
+                    TextButton(onClick = {onAddCarrito(cantidad,producto,producto.tamanyo)}) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
