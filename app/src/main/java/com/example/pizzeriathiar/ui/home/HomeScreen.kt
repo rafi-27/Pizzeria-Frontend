@@ -253,16 +253,13 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (canti:Int,prod
                         }
                     }
 
-                    TextButton(onClick = {onAddCarrito(cantidad,producto,producto.tamanyo)}) {
+                    TextButton(onClick = {onAddCarrito(cantidad, producto, producto.tamanyo)}) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
                         )
                     }
-
-
                 }
-
             }
         }
     }

@@ -34,7 +34,7 @@ class HomeViewModel {
         productosDTO.value=listaProductos
     }
 
-    fun addCarritoFun(cantidad:Int,productoDTOParam: ProductoDTO,tam:SIZE){
+    fun addCarritoFun(cantidad:Int,productoDTOParam: ProductoDTO,tam:SIZE?){
         if (pedido.value == null){
             pedido.value = PedidoDTO(1, Date(),0.0, EstadoPedido.PENDIENTE, mutableListOf())
         }else{
