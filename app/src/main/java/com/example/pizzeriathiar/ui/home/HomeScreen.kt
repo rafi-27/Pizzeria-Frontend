@@ -64,7 +64,6 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
     val cantidad by homeViewModel.cantidadCarrito.observeAsState(0)
 
-
     val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.PIZZA }
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
     val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
@@ -122,7 +121,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPizzas) { producto ->
-            ProductoItem(producto, R.drawable.kebabpizza,{homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
+            ProductoItem(producto, R.drawable.kebabpizza, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
         }
 
         item {
@@ -137,7 +136,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPastas) { producto ->
-            ProductoItem(producto, R.drawable.pasta, {homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
+            ProductoItem(producto, R.drawable.pasta, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
         }
 
         item {
@@ -152,7 +151,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaBebidas) { producto ->
-            ProductoItem(producto, R.drawable.powerking, {homeViewModel.addCarritoFun(cantidad,producto,producto.tamanyo)})
+            ProductoItem(producto, R.drawable.powerking, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
         }
 
 
@@ -161,11 +160,10 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: () -> Unit) {
+fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, producto:ProductoDTO, size:SIZE) -> Unit) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
-
 
     Card(
         modifier = Modifier
@@ -238,22 +236,23 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: () -> Unit) {
                                 onDismissRequest = { desplegar = false }) {
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectSize = "Grande"
+                                        selectSize = SIZE.GRANDE.toString()
                                         desplegar = false },
                                     text = { Text(SIZE.GRANDE.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "Mediana"
-                                        desplegar = false},
+                                    onClick = { selectSize = SIZE.MEDIANA.toString()
+                                        desplegar = false },
                                     text = { Text(SIZE.MEDIANA.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = "Pequeña"
-                                        desplegar = false},
+                                    onClick = { selectSize = SIZE.PEQUEÑA.toString()
+                                        desplegar = false },
                                     text = { Text(SIZE.PEQUEÑA.toString()) })
                             }
                         }
-                    }
+                    } else {selectSize = SIZE.PEQUEÑA.toString()}
 
-                    TextButton(onClick = {onAddCarrito()}) {
+                    //tamanyo != null || producto.tipo == TipoProducto.PASTA
+                    TextButton(onClick = {onAddCarrito(cantidad, producto, SIZE.valueOf(selectSize))}, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
@@ -263,7 +262,6 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: () -> Unit) {
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
