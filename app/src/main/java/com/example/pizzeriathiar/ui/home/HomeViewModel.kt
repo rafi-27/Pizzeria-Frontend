@@ -38,19 +38,11 @@ class HomeViewModel {
     fun addCarritoFun(cantidad:Int,productoDTOParam: ProductoDTO,tam:SIZE?){
         if (pedido.value == null){
             pedido.value = PedidoDTO(1, Date(),0.0, EstadoPedido.PENDIENTE, mutableListOf())
-
-            productoDTOParam.tamanyo = tam
-            pedido.value?.listaLineaPedido?.add(LineaPedidoDTO(null, cantidad = cantidad, productoDTO = productoDTOParam))
-            cantidadCarrito.value = cantidadCarrito.value?.plus(cantidad)
-
-            Log.d("Tag Pedido","Pedido: ${pedido.value}")
-        }else{
-            productoDTOParam.tamanyo = tam
-            pedido.value?.listaLineaPedido?.add(LineaPedidoDTO(null, cantidad = cantidad, productoDTO = productoDTOParam))
-            cantidadCarrito.value = cantidadCarrito.value?.plus(cantidad)
-            Log.d("Tag Pedido","Pedido: ${pedido.value}")
         }
+
+        productoDTOParam.tamanyo = tam
+        pedido.value?.listaLineaPedido?.add(LineaPedidoDTO(null, cantidad = cantidad, productoDTO = productoDTOParam))
+        cantidadCarrito.value = cantidadCarrito.value?.plus(cantidad)
+        Log.d("Tag Pedido","Pedido: ${pedido.value}")
     }
 }
-
-
