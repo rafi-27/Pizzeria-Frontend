@@ -24,14 +24,18 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -41,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -75,7 +80,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = (MaterialTheme.colorScheme.background))
+            .background(color = Color(0xFFf7eeec))
     ) {
         item {
             TopAppBar(modifier = Modifier.fillMaxWidth(),
@@ -107,7 +112,9 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                             contentDescription = "Carrito"
                         )
                     }
-                }
+                }, colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color(0xFFffac5f)
+                )
             )
         }
 
@@ -169,10 +176,11 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, 
     val ctexto = LocalContext.current
 
 
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxSize()
-            .padding(30.dp)
+            .padding(10.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFdce5d9))//0xFFf9d5cd
     ) {
         Row(horizontalArrangement = Arrangement.Center) {
             Image(
