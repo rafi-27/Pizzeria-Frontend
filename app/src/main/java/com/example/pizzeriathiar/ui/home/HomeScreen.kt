@@ -90,7 +90,6 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                         )
                         Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 4.dp))
                     }
-
                 },
                 actions = {
                     BadgedBox(
