@@ -83,9 +83,11 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
             .background(color = Color(0xFFf7eeec))
     ) {
         item {
-            TopAppBar(modifier = Modifier.fillMaxWidth(),
+            TopAppBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = {
-                    Row (verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Image(
@@ -93,7 +95,11 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                             contentDescription = "",
                             modifier = Modifier.size(50.dp)
                         )
-                        Text(text = "LA PIZZA DEL SULTAN", fontSize = 18.sp, modifier = Modifier.padding(start = 4.dp))
+                        Text(
+                            text = "LA PIZZA DEL SULTAN",
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
                     }
                 },
                 actions = {
@@ -102,7 +108,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
                             Badge {
                                 Text(
                                     //text = ""+listaLineaPedido.sumOf {it.cantidad}
-                                    text = ""+cantidad
+                                    text = "" + cantidad
                                 )
                             }
                         }, modifier = Modifier.padding(34.dp)
@@ -121,7 +127,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         item {
             Text(
                 text = "Pizzas",
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,13 +136,23 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPizzas) { producto ->
-            ProductoItem(producto, R.drawable.kebabpizza, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
+            ProductoItem(
+                producto,
+                R.drawable.kebabpizza,
+                onAddCarrito = { cantidad, producto, size ->
+                    homeViewModel.addCarritoFun(
+                        cantidad,
+                        producto,
+                        size
+                    )
+                })
         }
 
         item {
             Text(
                 text = "Pasta",
                 fontSize = 20.sp,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,13 +161,23 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaPastas) { producto ->
-            ProductoItem(producto, R.drawable.pasta, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
+            ProductoItem(
+                producto,
+                R.drawable.pasta,
+                onAddCarrito = { cantidad, producto, size ->
+                    homeViewModel.addCarritoFun(
+                        cantidad,
+                        producto,
+                        size
+                    )
+                })
         }
 
         item {
             Text(
                 text = "Bebida",
                 fontSize = 20.sp,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,7 +186,16 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
         }
 
         items(listaBebidas) { producto ->
-            ProductoItem(producto, R.drawable.powerking, onAddCarrito = {cantidad, producto, size -> homeViewModel.addCarritoFun(cantidad, producto, size) })
+            ProductoItem(
+                producto,
+                R.drawable.powerking,
+                onAddCarrito = { cantidad, producto, size ->
+                    homeViewModel.addCarritoFun(
+                        cantidad,
+                        producto,
+                        size
+                    )
+                })
         }
 
 
@@ -169,12 +204,15 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, producto:ProductoDTO, size:SIZE?) -> Unit) {
+fun ProductoItem(
+    producto: ProductoDTO,
+    foto: Int,
+    onAddCarrito: (cantidad: Int, producto: ProductoDTO, size: SIZE?) -> Unit
+) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
     val ctexto = LocalContext.current
-
 
     OutlinedCard(
         modifier = Modifier
@@ -184,7 +222,10 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, 
     ) {
         Row(horizontalArrangement = Arrangement.Center) {
             Image(
-                modifier = Modifier.size(100.dp),
+                modifier = Modifier
+                    .size(100.dp)
+                    .fillMaxSize()
+                    .padding(top = 12.dp),
                 alignment = Alignment.CenterStart,
                 painter = painterResource(foto),
                 contentDescription = ""
@@ -193,22 +234,27 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, 
                 Text(
                     producto.nombre,
                     textAlign = TextAlign.Left,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .fillMaxSize()
                         .padding(top = 5.dp)
                 )
-                Text(
-                    //el que hize yo:producto.listaIngredientesProducto.map { it.nombre }.joinToString(),
-                    //pero android studio me chivo la manera que estoy usando acontinuacion:para mostrar solo el nombre sin nada mas
-                    producto.listaIngredientesProducto.joinToString { it.nombre },
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(top = 5.dp)
-                )
+                if (producto.tipo == TipoProducto.PIZZA || producto.tipo == TipoProducto.PASTA) {
+                    Text(
+                        //el que hize yo:producto.listaIngredientesProducto.map { it.nombre }.joinToString(),
+                        //pero android studio me chivo la manera que estoy usando acontinuacion:para mostrar solo el nombre sin nada mas
+                        producto.listaIngredientesProducto.joinToString { it.nombre },
+                        textAlign = TextAlign.Left,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(top = 5.dp)
+                    )
+                }
                 Text(
                     "" + producto.precio + "€",
                     textAlign = TextAlign.Left,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(top = 5.dp)
@@ -249,27 +295,39 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, 
                                 DropdownMenuItem(
                                     onClick = {
                                         selectSize = SIZE.GRANDE.toString()
-                                        desplegar = false },
+                                        desplegar = false
+                                    },
                                     text = { Text(SIZE.GRANDE.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = SIZE.MEDIANA.toString()
-                                        desplegar = false },
+                                    onClick = {
+                                        selectSize = SIZE.MEDIANA.toString()
+                                        desplegar = false
+                                    },
                                     text = { Text(SIZE.MEDIANA.toString()) })
                                 DropdownMenuItem(
-                                    onClick = { selectSize = SIZE.PEQUEÑA.toString()
-                                        desplegar = false },
+                                    onClick = {
+                                        selectSize = SIZE.PEQUEÑA.toString()
+                                        desplegar = false
+                                    },
                                     text = { Text(SIZE.PEQUEÑA.toString()) })
                             }
                         }
                     }
-                    Log.d("tamanyo","Valor: ${selectSize}")
+                    Log.d("tamanyo", "Valor: ${selectSize}")
                     //tamanyo != null || producto.tipo == TipoProducto.PASTA
-                    var size:SIZE = SIZE.PEQUEÑA
-                    if (producto.tipo != TipoProducto.PASTA && selectSize != "Tamaño"){size = SIZE.valueOf(selectSize)}
+                    var size: SIZE = SIZE.PEQUEÑA
+                    if (producto.tipo != TipoProducto.PASTA && selectSize != "Tamaño") {
+                        size = SIZE.valueOf(selectSize)
+                    }
 
-                    TextButton(onClick = {onAddCarrito(cantidad, producto, size)
-                                         Toast.makeText(ctexto,"Se han añadido x${cantidad}, ${producto.nombre}",Toast.LENGTH_SHORT).show()
-                                         }, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
+                    TextButton(onClick = {
+                        onAddCarrito(cantidad, producto, size)
+                        Toast.makeText(
+                            ctexto,
+                            "Se han añadido x${cantidad}, ${producto.nombre}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
