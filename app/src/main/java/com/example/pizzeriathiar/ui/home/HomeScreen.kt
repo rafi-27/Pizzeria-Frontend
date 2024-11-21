@@ -1,6 +1,8 @@
 package com.example.pizzeriathiar.ui.home
 
 import android.graphics.Paint.Align
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -160,10 +163,12 @@ fun PantallaProducto(homeViewModel: HomeViewModel) {
 
 
 @Composable
-fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, producto:ProductoDTO, size:SIZE) -> Unit) {
+fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, producto:ProductoDTO, size:SIZE?) -> Unit) {
     var cantidad by rememberSaveable { mutableStateOf(1) }
     var selectSize by rememberSaveable { mutableStateOf("Tamaño") }
     var desplegar by rememberSaveable { mutableStateOf(false) }
+    val ctexto = LocalContext.current
+
 
     Card(
         modifier = Modifier
@@ -249,10 +254,15 @@ fun ProductoItem(producto: ProductoDTO, foto: Int, onAddCarrito: (cantidad:Int, 
                                     text = { Text(SIZE.PEQUEÑA.toString()) })
                             }
                         }
-                    } else {selectSize = SIZE.PEQUEÑA.toString()}
-
+                    }
+                    Log.d("tamanyo","Valor: ${selectSize}")
                     //tamanyo != null || producto.tipo == TipoProducto.PASTA
-                    TextButton(onClick = {onAddCarrito(cantidad, producto, SIZE.valueOf(selectSize))}, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
+                    var size:SIZE = SIZE.PEQUEÑA
+                    if (producto.tipo != TipoProducto.PASTA && selectSize != "Tamaño"){size = SIZE.valueOf(selectSize)}
+
+                    TextButton(onClick = {onAddCarrito(cantidad, producto, size)
+                                         Toast.makeText(ctexto,"Se han añadido x${cantidad}, ${producto.nombre}",Toast.LENGTH_SHORT).show()
+                                         }, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
                         Text(
                             text = "+",
                             fontSize = 20.sp
