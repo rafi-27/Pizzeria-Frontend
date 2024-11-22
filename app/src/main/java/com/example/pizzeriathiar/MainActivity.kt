@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.PizzeriaThiarTheme
+import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.ui.home.HomeViewModel
 import com.example.pizzeriathiar.ui.home.PantallaProducto
 import com.example.pizzeriathiar.ui.login.LoginViewModel
@@ -25,9 +27,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PizzeriaThiarTheme {
-                //PantallaRegistro(RegistroViewModel())
-                //PantallaLogin(LoginViewModel())
-                PantallaProducto(HomeViewModel())
+                val navController = rememberNavController()
+                AppNavigation(navController = navController)
             }
         }
     }

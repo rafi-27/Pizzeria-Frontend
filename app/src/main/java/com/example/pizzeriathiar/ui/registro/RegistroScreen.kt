@@ -1,7 +1,11 @@
 package com.example.pizzeriathiar.ui.registro
 
+import android.view.textclassifier.TextLinks.TextLink
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,10 +34,19 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pizzeriathiar.data.model.ErrorMessege
+import com.example.pizzeriathiar.navigation.AppNavigation
+import org.w3c.dom.Text
 
 
 @Composable
@@ -65,7 +78,7 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
 
 
 @Composable
-fun PantallaRegistro(registroViewModel: RegistroViewModel){
+fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHostController){
     val cliente: ClienteDTO by registroViewModel.clienteDTO.observeAsState(ClienteDTO())
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
@@ -92,7 +105,21 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
 
             Button(onClick = {registroViewModel.onRegistrarClick()}, modifier = Modifier
                 .fillMaxWidth()
-                .padding(80.dp), enabled = encender) { Text("Registar")}
+                .padding(top = 80.dp,start = 80.dp, end = 80.dp), enabled = encender)
+            {
+                Text("Registar")
+            }
+
+            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+                Text(text = "Si ya tienes cuenta ")
+                Text(text = "logeate",style = TextStyle(
+                    color = Color.Blue,
+                    fontSize = 18.sp,
+                    textDecoration = TextDecoration.Underline
+                ), modifier = Modifier.clickable{})
+            }
+
+
         }
     }
 }
@@ -100,5 +127,6 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel){
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalRegistroPreview(){
-    PantallaRegistro(RegistroViewModel())
+    val navController = rememberNavController()
+    AppNavigation(navController = navController)
 }

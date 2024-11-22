@@ -25,7 +25,7 @@ import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.ui.registro.TextoField
 
 @Composable
-fun PantallaLogin(loginViewModel: LoginViewModel,navController: NavHostController) {
+fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostController) {
     val clienteLogin: LoginDTO by loginViewModel.loginDTO.observeAsState(LoginDTO())
     val encender:Boolean by loginViewModel.botonEncendido.observeAsState(false)
 
@@ -53,5 +53,5 @@ fun PantallaLogin(loginViewModel: LoginViewModel,navController: NavHostControlle
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalLoginPreview() {
-    PantallaLogin(LoginViewModel(), AppNavigation())
+   
 }
