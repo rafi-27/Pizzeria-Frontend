@@ -1,6 +1,5 @@
 package com.example.pizzeriathiar.ui.login
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,22 +14,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.backgroundDark
+import androidx.navigation.NavHostController
 import com.example.pizzeriathiar.R
-import com.example.pizzeriathiar.data.ClienteDTO
-import com.example.pizzeriathiar.data.ErrorMessege
-import com.example.pizzeriathiar.data.LoginDTO
-import com.example.pizzeriathiar.ui.registro.PantallaRegistro
-import com.example.pizzeriathiar.ui.registro.RegistroViewModel
+import com.example.pizzeriathiar.data.model.LoginDTO
+import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.ui.registro.TextoField
 
 @Composable
-fun PantallaLogin(loginViewModel: LoginViewModel) {
+fun PantallaLogin(loginViewModel: LoginViewModel,navController: NavHostController) {
     val clienteLogin: LoginDTO by loginViewModel.loginDTO.observeAsState(LoginDTO())
     val encender:Boolean by loginViewModel.botonEncendido.observeAsState(false)
 
@@ -58,5 +53,5 @@ fun PantallaLogin(loginViewModel: LoginViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalLoginPreview() {
-    PantallaLogin(LoginViewModel())
+    PantallaLogin(LoginViewModel(), AppNavigation())
 }

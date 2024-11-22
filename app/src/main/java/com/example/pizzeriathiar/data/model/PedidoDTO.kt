@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.data
+package com.example.pizzeriathiar.data.model
 
 import java.util.Date
 

@@ -2,13 +2,13 @@ package com.example.pizzeriathiar.ui.home
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.pizzeriathiar.data.EstadoPedido
-import com.example.pizzeriathiar.data.Ingrediente
-import com.example.pizzeriathiar.data.LineaPedidoDTO
-import com.example.pizzeriathiar.data.PedidoDTO
-import com.example.pizzeriathiar.data.ProductoDTO
-import com.example.pizzeriathiar.data.SIZE
-import com.example.pizzeriathiar.data.TipoProducto
+import com.example.pizzeriathiar.data.model.EstadoPedido
+import com.example.pizzeriathiar.data.model.Ingrediente
+import com.example.pizzeriathiar.data.model.LineaPedidoDTO
+import com.example.pizzeriathiar.data.model.PedidoDTO
+import com.example.pizzeriathiar.data.model.ProductoDTO
+import com.example.pizzeriathiar.data.model.SIZE
+import com.example.pizzeriathiar.data.model.TipoProducto
 import java.util.Date
 
 class HomeViewModel {
@@ -38,7 +38,7 @@ class HomeViewModel {
         productosDTO.value=listaProductos
     }
 
-    fun addCarritoFun(cantidad:Int,productoDTOParam: ProductoDTO,tam:SIZE?){
+    fun addCarritoFun(cantidad:Int, productoDTOParam: ProductoDTO, tam: SIZE?){
         if (pedido.value == null){
             pedido.value = PedidoDTO(1, Date(),0.0, EstadoPedido.PENDIENTE, mutableListOf())
         }

@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.data
+package com.example.pizzeriathiar.data.model
 
 data class LineaPedidoDTO(
     val id:Int?,

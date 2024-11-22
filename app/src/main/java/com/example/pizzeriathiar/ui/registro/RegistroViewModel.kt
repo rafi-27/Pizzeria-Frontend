@@ -3,8 +3,8 @@ package com.example.pizzeriathiar.ui.registro
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.pizzeriathiar.data.ClienteDTO
-import com.example.pizzeriathiar.data.ErrorMessege
+import com.example.pizzeriathiar.data.model.ClienteDTO
+import com.example.pizzeriathiar.data.model.ErrorMessege
 
 class RegistroViewModel:ViewModel() {
     val clienteDTO = MutableLiveData<ClienteDTO>()
@@ -12,7 +12,7 @@ class RegistroViewModel:ViewModel() {
     val mensajeDeError = MutableLiveData<ErrorMessege>()
 
     //Funcion para concatenar
-    fun onClienteChange(newCliente:ClienteDTO){
+    fun onClienteChange(newCliente: ClienteDTO){
         mensajeDeError.value = ErrorMessege(
             nombre = if (newCliente.nombre.any{it.isDigit()}&&newCliente.nombre.isNotBlank()) "El nombre no puede tener digitos." else "",
             email = if (!newCliente.email.matches(Regex("^[\\w.-]+@[\\w-]+\\.[A-Za-z]{2,4}$"))&&newCliente.email.isNotBlank()) "Correo invalido" else "",

@@ -1,29 +1,23 @@
 package com.example.pizzeriathiar.ui.home
 
-import android.graphics.Paint.Align
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -34,19 +28,16 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -54,16 +45,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pizzeriathiar.R
-import com.example.pizzeriathiar.data.Ingrediente
-import com.example.pizzeriathiar.data.LineaPedidoDTO
-import com.example.pizzeriathiar.data.PedidoDTO
-import com.example.pizzeriathiar.data.PizzaDTO
-import com.example.pizzeriathiar.data.ProductoDTO
-import com.example.pizzeriathiar.data.SIZE
-import com.example.pizzeriathiar.data.TipoProducto
-import com.example.pizzeriathiar.ui.login.LoginViewModel
-import com.example.pizzeriathiar.ui.registro.PantallaRegistro
-import com.example.pizzeriathiar.ui.registro.RegistroViewModel
+import com.example.pizzeriathiar.data.model.ProductoDTO
+import com.example.pizzeriathiar.data.model.SIZE
+import com.example.pizzeriathiar.data.model.TipoProducto
 
 
 @OptIn(ExperimentalMaterial3Api::class)

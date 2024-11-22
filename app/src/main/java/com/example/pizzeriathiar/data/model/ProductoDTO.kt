@@ -1,4 +1,4 @@
-package com.example.pizzeriathiar.data
+package com.example.pizzeriathiar.data.model
 
 data class ProductoDTO (
     val id:Int?=null,
@@ -6,5 +6,5 @@ data class ProductoDTO (
     val precio:Double=0.0,
     var tamanyo: SIZE? = null,
     val listaIngredientesProducto:List<Ingrediente> = emptyList<Ingrediente>(),
-    val tipo:TipoProducto?=null
+    val tipo: TipoProducto?=null
 )
