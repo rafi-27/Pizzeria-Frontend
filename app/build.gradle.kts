@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

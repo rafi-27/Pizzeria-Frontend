@@ -44,15 +44,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.model.ProductoDTO
 import com.example.pizzeriathiar.data.model.SIZE
 import com.example.pizzeriathiar.data.model.TipoProducto
+import com.example.pizzeriathiar.navigation.AppNavigation
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaProducto(homeViewModel: HomeViewModel) {
+fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostController) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
     val cantidad by homeViewModel.cantidadCarrito.observeAsState(0)
 
@@ -326,5 +329,6 @@ fun ProductoItem(
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalHomePreview() {
-    PantallaProducto(HomeViewModel())
+    val navController = rememberNavController()
+    AppNavigation(navController = navController)
 }

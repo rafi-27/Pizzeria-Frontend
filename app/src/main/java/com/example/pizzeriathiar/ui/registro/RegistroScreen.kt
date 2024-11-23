@@ -46,25 +46,42 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pizzeriathiar.data.model.ErrorMessege
 import com.example.pizzeriathiar.navigation.AppNavigation
+import com.example.pizzeriathiar.navigation.Screen
 import org.w3c.dom.Text
 
 
 @Composable
-fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChange:(String)->Unit,valor:String,error:String=""){
+fun TextoField(
+    teclado: KeyboardType = KeyboardType.Text,
+    label: String,
+    onClietneChange: (String) -> Unit,
+    valor: String,
+    error: String = ""
+) {
     var hidden by remember { mutableStateOf(true) }
 
     OutlinedTextField(
-        keyboardOptions = KeyboardOptions(keyboardType =  teclado ),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp, horizontal = 16.dp),
+        keyboardOptions = KeyboardOptions(keyboardType = teclado),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp, horizontal = 16.dp),
         label = { Text(label) },
         visualTransformation = if (teclado == KeyboardType.Password && hidden) PasswordVisualTransformation() else VisualTransformation.None,
-        trailingIcon = {if (teclado == KeyboardType.Password)
-            IconButton(onClick = {
-                if (hidden){hidden = false}else{hidden=true}
-            }) {
-                Icon(
-                imageVector = if (hidden) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
-                contentDescription = "")}},
+        trailingIcon = {
+            if (teclado == KeyboardType.Password)
+                IconButton(onClick = {
+                    if (hidden) {
+                        hidden = false
+                    } else {
+                        hidden = true
+                    }
+                }) {
+                    Icon(
+                        imageVector = if (hidden) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = ""
+                    )
+                }
+        },
         onValueChange = onClietneChange,
         value = valor
     )
@@ -72,18 +89,25 @@ fun TextoField(teclado:KeyboardType=KeyboardType.Text,label:String,onClietneChan
         color = MaterialTheme.colorScheme.error,
         text = error,
         fontSize = 12.sp,
-        modifier = Modifier.fillMaxWidth().padding(top = 2.dp).padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 2.dp)
+            .padding(horizontal = 16.dp)
     )
 }
 
 
 @Composable
-fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHostController){
+fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHostController) {
     val cliente: ClienteDTO by registroViewModel.clienteDTO.observeAsState(ClienteDTO())
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
 
-    LazyColumn(modifier = Modifier.fillMaxSize().background(color = (MaterialTheme.colorScheme.background))) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = (MaterialTheme.colorScheme.background))
+    ) {
         item {
             Image(
                 modifier = Modifier
@@ -96,27 +120,70 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
             //Los errores tienen que estar en los siguentes campos:+
             //nombre email y password
 
-            TextoField(KeyboardType.Text,"Nombre",{registroViewModel.onClienteChange(cliente.copy(nombre = it))},cliente.nombre,errorTipo.nombre)
-            TextoField(KeyboardType.Text,"DNI",{registroViewModel.onClienteChange(cliente.copy(dni = it))},cliente.dni)
-            TextoField(KeyboardType.Text,"Direccion",{registroViewModel.onClienteChange(cliente.copy(direccion = it))},cliente.direccion)
-            TextoField(KeyboardType.Number,"Telefono",{registroViewModel.onClienteChange(cliente.copy(telefono = it))},cliente.telefono)
-            TextoField(KeyboardType.Email,"Email",{registroViewModel.onClienteChange(cliente.copy(email = it))},cliente.email,errorTipo.email)
-            TextoField(KeyboardType.Password,"Password",{registroViewModel.onClienteChange(cliente.copy(password = it))},cliente.password,errorTipo.password)
+            TextoField(
+                KeyboardType.Text,
+                "Nombre",
+                { registroViewModel.onClienteChange(cliente.copy(nombre = it)) },
+                cliente.nombre,
+                errorTipo.nombre
+            )
+            TextoField(
+                KeyboardType.Text,
+                "DNI",
+                { registroViewModel.onClienteChange(cliente.copy(dni = it)) },
+                cliente.dni
+            )
+            TextoField(
+                KeyboardType.Text,
+                "Direccion",
+                { registroViewModel.onClienteChange(cliente.copy(direccion = it)) },
+                cliente.direccion
+            )
+            TextoField(
+                KeyboardType.Number,
+                "Telefono",
+                { registroViewModel.onClienteChange(cliente.copy(telefono = it)) },
+                cliente.telefono
+            )
+            TextoField(
+                KeyboardType.Email,
+                "Email",
+                { registroViewModel.onClienteChange(cliente.copy(email = it)) },
+                cliente.email,
+                errorTipo.email
+            )
+            TextoField(
+                KeyboardType.Password,
+                "Password",
+                { registroViewModel.onClienteChange(cliente.copy(password = it)) },
+                cliente.password,
+                errorTipo.password
+            )
 
-            Button(onClick = {registroViewModel.onRegistrarClick()}, modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 80.dp,start = 80.dp, end = 80.dp), enabled = encender)
+            Button(
+                onClick = {
+                    registroViewModel.onRegistrarClick()
+                    navController.navigate(Screen.Home.route)
+                }, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp, start = 70.dp, end = 70.dp), enabled = encender
+            )
             {
                 Text("Registar")
             }
 
-            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp)
+            ) {
                 Text(text = "Si ya tienes cuenta ")
-                Text(text = "logeate",style = TextStyle(
+                Text(text = "logeate", style = TextStyle(
                     color = Color.Blue,
                     fontSize = 18.sp,
                     textDecoration = TextDecoration.Underline
-                ), modifier = Modifier.clickable{})
+                ), modifier = Modifier.clickable { navController.navigate(Screen.Login.route) })
             }
 
 
@@ -126,7 +193,7 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
 
 @Preview(showBackground = true)
 @Composable
-fun PantallaPrincipalRegistroPreview(){
+fun PantallaPrincipalRegistroPreview() {
     val navController = rememberNavController()
     AppNavigation(navController = navController)
 }

@@ -20,21 +20,21 @@ fun AppNavigation(navController: NavHostController){
         composable(Screen.Login.route){
             PantallaLogin(
                 loginViewModel = LoginViewModel(),
-                navController = navController
+                navHostController = navController
             )
         }
 
-        composable(Screen.Login.route){
+        composable(Screen.Registro.route){
             PantallaRegistro(
                 registroViewModel = RegistroViewModel(),
                 navController = navController
             )
         }
 
-        composable(Screen.Login.route){
+        composable(Screen.Home.route){
             PantallaProducto(
                 homeViewModel = HomeViewModel(),
-                navController = navController
+                navHostController = navController
             )
         }
 
