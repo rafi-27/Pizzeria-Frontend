@@ -185,8 +185,6 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
                     textDecoration = TextDecoration.Underline
                 ), modifier = Modifier.clickable { navController.navigate(Screen.Login.route) })
             }
-
-
         }
     }
 }

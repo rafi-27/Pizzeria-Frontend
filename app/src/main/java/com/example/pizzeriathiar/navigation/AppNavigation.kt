@@ -38,5 +38,7 @@ fun AppNavigation(navController: NavHostController){
             )
         }
 
+        composable(Screen.Logout.route) {  }
+
     }
 }

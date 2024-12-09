@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -19,12 +20,16 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -51,6 +56,9 @@ import com.example.pizzeriathiar.data.model.ProductoDTO
 import com.example.pizzeriathiar.data.model.SIZE
 import com.example.pizzeriathiar.data.model.TipoProducto
 import com.example.pizzeriathiar.navigation.AppNavigation
+import com.example.pizzeriathiar.navigation.Screen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,132 +71,135 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
     val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
 
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFFf7eeec))
-    ) {
-        item {
-            TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.logo),
-                            contentDescription = "",
-                            modifier = Modifier.size(50.dp)
-                        )
-                        Text(
-                            text = "LA PIZZA DEL SULTAN",
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(start = 4.dp)
-                        )
-                    }
-                },
-                actions = {
-                    BadgedBox(
-                        badge = {
-                            Badge {
-                                Text(
-                                    //text = ""+listaLineaPedido.sumOf {it.cantidad}
-                                    text = "" + cantidad
-                                )
-                            }
-                        }, modifier = Modifier.padding(34.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ShoppingCart,
-                            contentDescription = "Carrito"
-                        )
-                    }
-                }, colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color(0xFFffac5f)
-                )
-            )
-        }
-
-        item {
-            Text(
-                text = "Pizzas",
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
+    Scaffold(
+        topBar = { topBarMenu(cantidad) },
+        content = {innerPadding ->
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp)
-            )
-        }
-
-        items(listaPizzas) { producto ->
-            ProductoItem(
-                producto,
-                R.drawable.kebabpizza,
-                onAddCarrito = { cantidad, producto, size ->
-                    homeViewModel.addCarritoFun(
-                        cantidad,
-                        producto,
-                        size
+                    .fillMaxSize().padding(innerPadding)
+                    .background(color = Color(0xFFf7eeec))
+            ) {
+                item {
+                    Text(
+                        text = "Pizzas",
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 40.dp)
                     )
-                })
-        }
+                }
 
-        item {
-            Text(
-                text = "Pasta",
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp)
-            )
-        }
-
-        items(listaPastas) { producto ->
-            ProductoItem(
-                producto,
-                R.drawable.pasta,
-                onAddCarrito = { cantidad, producto, size ->
-                    homeViewModel.addCarritoFun(
-                        cantidad,
+                items(listaPizzas) { producto ->
+                    ProductoItem(
                         producto,
-                        size
+                        R.drawable.kebabpizza,
+                        onAddCarrito = { cantidad, producto, size ->
+                            homeViewModel.addCarritoFun(
+                                cantidad,
+                                producto,
+                                size
+                            )
+                        })
+                }
+
+                item {
+                    Text(
+                        text = "Pasta",
+                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 40.dp)
                     )
-                })
-        }
+                }
 
-        item {
-            Text(
-                text = "Bebida",
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp)
-            )
-        }
-
-        items(listaBebidas) { producto ->
-            ProductoItem(
-                producto,
-                R.drawable.powerking,
-                onAddCarrito = { cantidad, producto, size ->
-                    homeViewModel.addCarritoFun(
-                        cantidad,
+                items(listaPastas) { producto ->
+                    ProductoItem(
                         producto,
-                        size
+                        R.drawable.pasta,
+                        onAddCarrito = { cantidad, producto, size ->
+                            homeViewModel.addCarritoFun(
+                                cantidad,
+                                producto,
+                                size
+                            )
+                        })
+                }
+
+                item {
+                    Text(
+                        text = "Bebida",
+                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 40.dp)
                     )
-                })
+                }
+
+                items(listaBebidas) { producto ->
+                    ProductoItem(
+                        producto,
+                        R.drawable.powerking,
+                        onAddCarrito = { cantidad, producto, size ->
+                            homeViewModel.addCarritoFun(
+                                cantidad,
+                                producto,
+                                size
+                            )
+                        })
+                }
+            }
         }
-
-
-    }
+    )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun topBarMenu(cantidad:Int){
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.logo),
+                    contentDescription = "",
+                    modifier = Modifier.size(50.dp)
+                )
+                Text(
+                    text = "LA PIZZA DEL SULTAN",
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+        },
+        actions = {
+            BadgedBox(
+                badge = {
+                    Badge {
+                        Text(
+                            //text = ""+listaLineaPedido.sumOf {it.cantidad}
+                            text = "" + cantidad
+                        )
+                    }
+                }, modifier = Modifier.padding(34.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "Carrito"
+                )
+            }
+        }, colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color(0xFFffac5f)
+        )
+    )
+}
 
 @Composable
 fun ProductoItem(
@@ -325,6 +336,40 @@ fun ProductoItem(
         }
     }
 }
+//-------------------------------------------------------------------------------------------------------------//
+
+
+
+@Composable
+fun Drawer(
+    navHostController: NavHostController,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+    items: List<Screen>
+) {
+    ModalDrawerSheet(modifier = Modifier.width(250.dp)) {
+        Column {
+            items.forEach { screen ->
+                DrawerItem(navHostController, screen)
+                scope.launch { drawerState.close() }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun DrawerItem(navHostController: NavHostController, screen: Screen) {
+    NavigationDrawerItem(
+        label = { Text(screen.route) },
+        selected = false,
+        onClick = {
+            navHostController.navigate(screen.route) {launchSingleTop=true}
+        }
+    )
+}
+
+//-------------------------------------------------------------------------------------------------------------//
 
 @Preview(showBackground = true)
 @Composable
