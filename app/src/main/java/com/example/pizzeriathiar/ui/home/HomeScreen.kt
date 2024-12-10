@@ -16,17 +16,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -34,10 +37,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -71,96 +76,107 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
     val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
 
-    Scaffold(
-        topBar = { topBarMenu(cantidad) },
-        content = {innerPadding ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize().padding(innerPadding)
-                    .background(color = Color(0xFFf7eeec))
-            ) {
-                item {
-                    Text(
-                        text = "Pizzas",
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp)
-                    )
-                }
+    val screnns = listOf(Screen.Home,Screen.Logout)
 
-                items(listaPizzas) { producto ->
-                    ProductoItem(
-                        producto,
-                        R.drawable.kebabpizza,
-                        onAddCarrito = { cantidad, producto, size ->
-                            homeViewModel.addCarritoFun(
-                                cantidad,
-                                producto,
-                                size
-                            )
-                        })
-                }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = { Drawer(navHostController,drawerState,scope, screnns) }
+    ) {
+        Scaffold(
+            topBar = { topBarMenu(cantidad) },
+            content = {innerPadding ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .background(color = Color(0xFFf7eeec))
+                ) {
+                    item {
+                        Text(
+                            text = "Pizzas",
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 40.dp)
+                        )
+                    }
 
-                item {
-                    Text(
-                        text = "Pasta",
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp)
-                    )
-                }
+                    items(listaPizzas) { producto ->
+                        ProductoItem(
+                            producto,
+                            R.drawable.kebabpizza,
+                            onAddCarrito = { cantidad, producto, size ->
+                                homeViewModel.addCarritoFun(
+                                    cantidad,
+                                    producto,
+                                    size
+                                )
+                            })
+                    }
 
-                items(listaPastas) { producto ->
-                    ProductoItem(
-                        producto,
-                        R.drawable.pasta,
-                        onAddCarrito = { cantidad, producto, size ->
-                            homeViewModel.addCarritoFun(
-                                cantidad,
-                                producto,
-                                size
-                            )
-                        })
-                }
+                    item {
+                        Text(
+                            text = "Pasta",
+                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 40.dp)
+                        )
+                    }
 
-                item {
-                    Text(
-                        text = "Bebida",
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp)
-                    )
-                }
+                    items(listaPastas) { producto ->
+                        ProductoItem(
+                            producto,
+                            R.drawable.pasta,
+                            onAddCarrito = { cantidad, producto, size ->
+                                homeViewModel.addCarritoFun(
+                                    cantidad,
+                                    producto,
+                                    size
+                                )
+                            })
+                    }
 
-                items(listaBebidas) { producto ->
-                    ProductoItem(
-                        producto,
-                        R.drawable.powerking,
-                        onAddCarrito = { cantidad, producto, size ->
-                            homeViewModel.addCarritoFun(
-                                cantidad,
-                                producto,
-                                size
-                            )
-                        })
+                    item {
+                        Text(
+                            text = "Bebida",
+                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 40.dp)
+                        )
+                    }
+
+                    items(listaBebidas) { producto ->
+                        ProductoItem(
+                            producto,
+                            R.drawable.powerking,
+                            onAddCarrito = { cantidad, producto, size ->
+                                homeViewModel.addCarritoFun(
+                                    cantidad,
+                                    producto,
+                                    size
+                                )
+                            })
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun topBarMenu(cantidad:Int){
     TopAppBar(
+        navigationIcon = { Icons.Default.Menu },
         modifier = Modifier.fillMaxWidth(),
         title = {
             Row(
@@ -337,9 +353,6 @@ fun ProductoItem(
     }
 }
 //-------------------------------------------------------------------------------------------------------------//
-
-
-
 @Composable
 fun Drawer(
     navHostController: NavHostController,

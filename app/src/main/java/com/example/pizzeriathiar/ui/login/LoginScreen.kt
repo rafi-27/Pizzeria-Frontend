@@ -35,7 +35,6 @@ import com.example.pizzeriathiar.navigation.Screen
 import com.example.pizzeriathiar.ui.registro.TextoField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import androidx.lifecycle.viewModelScope
 
 @Composable
 fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostController) {
@@ -75,7 +74,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
             Button(onClick = {
                 loginViewModel.onRegistrarClick()
                 navHostController.navigate(Screen.Home.route)
-                bloqueoOnclickLogin()
+                //loginViewModel.bloqueoOnclickLogin()
             },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -101,17 +100,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
     }
 }
 
-suspend fun esperarCincoSegundos(){
-    Log.d("Hilos","Hilo principal bloqueado durante 10 segundos.")
-    delay(10000)
-    Log.d("Hilos","Hilo principal desbloqueado despues de 10 segundos.")
-}
 
-fun bloqueoOnclickLogin(){
-    viewModelScope.launch (Dispatchers.IO) { //Lanza una corutina
-        esperarCincoSegundos()
-    }
-}
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalLoginPreview() {

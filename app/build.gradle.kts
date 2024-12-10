@@ -73,4 +73,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.android)
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 }
