@@ -1,5 +1,6 @@
 package com.example.pizzeriathiar.ui.login
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -71,6 +72,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
             Button(onClick = {
                 loginViewModel.onRegistrarClick()
                 navHostController.navigate(Screen.Home.route)
+                bloqueoOnclickLogin()
             },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,6 +98,15 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
     }
 }
 
+fun esperarCincoSegundos(){
+    Log.d("Hilos","Hilo principal bloqueado durante 10 segundos.")
+    Thread.sleep(10000)
+    Log.d("Hilos","Hilo principal desbloqueado despues de 10 segundos.")
+}
+
+fun bloqueoOnclickLogin(){
+    esperarCincoSegundos()
+}
 @Preview(showBackground = true)
 @Composable
 fun PantallaPrincipalLoginPreview() {
