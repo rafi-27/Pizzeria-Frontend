@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.PizzeriaThiarTheme
+import com.example.pizzeriathiar.data.network.RetrofitInstance
+import com.example.pizzeriathiar.data.repositories.ClienteRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.ui.home.HomeViewModel
 import com.example.pizzeriathiar.ui.home.PantallaProducto
@@ -28,7 +30,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             PizzeriaThiarTheme {
                 val navController = rememberNavController()
-                AppNavigation(navController = navController)
+                //PantallaRegistro(RegistroViewModel(ClienteRepository(RetrofitInstance.clienteApi)),navController)
+                AppNavigation(navController = navController,(ClienteRepository(RetrofitInstance.clienteApi)))
             }
         }
     }

@@ -27,6 +27,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -60,6 +61,8 @@ import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.model.ProductoDTO
 import com.example.pizzeriathiar.data.model.SIZE
 import com.example.pizzeriathiar.data.model.TipoProducto
+import com.example.pizzeriathiar.data.network.RetrofitInstance
+import com.example.pizzeriathiar.data.repositories.ClienteRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
@@ -85,7 +88,7 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
         drawerContent = { Drawer(navHostController,drawerState,scope, screnns) }
     ) {
         Scaffold(
-            topBar = { topBarMenu(cantidad) },
+            topBar = { topBarMenu(cantidad, { scope.launch { drawerState.open() } }) },
             content = {innerPadding ->
                 LazyColumn(
                     modifier = Modifier
@@ -174,9 +177,14 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun topBarMenu(cantidad:Int){
+fun topBarMenu(cantidad:Int,onClickMenu: () -> Unit){
     TopAppBar(
-        navigationIcon = { Icons.Default.Menu },
+        navigationIcon = {  IconButton(onClick = { onClickMenu() }) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = ""
+            )
+        } },
         modifier = Modifier.fillMaxWidth(),
         title = {
             Row(
@@ -190,7 +198,7 @@ fun topBarMenu(cantidad:Int){
                 )
                 Text(
                     text = "LA PIZZA DEL SULTAN",
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }
@@ -388,5 +396,5 @@ fun DrawerItem(navHostController: NavHostController, screen: Screen) {
 @Composable
 fun PantallaPrincipalHomePreview() {
     val navController = rememberNavController()
-    AppNavigation(navController = navController)
+    AppNavigation(navController = navController,(ClienteRepository(RetrofitInstance.clienteApi)))
 }

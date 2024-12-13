@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pizzeriathiar.data.model.ErrorMessege
+import com.example.pizzeriathiar.data.network.RetrofitInstance
+import com.example.pizzeriathiar.data.repositories.ClienteRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.navigation.Screen
 import org.w3c.dom.Text
@@ -193,5 +195,5 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
 @Composable
 fun PantallaPrincipalRegistroPreview() {
     val navController = rememberNavController()
-    AppNavigation(navController = navController)
+    AppNavigation(navController = navController,(ClienteRepository(RetrofitInstance.clienteApi)))
 }

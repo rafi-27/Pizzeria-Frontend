@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.pizzeriathiar.data.network.ClienteApiService
+import com.example.pizzeriathiar.data.repositories.ClienteRepository
 import com.example.pizzeriathiar.ui.home.HomeViewModel
 import com.example.pizzeriathiar.ui.home.PantallaProducto
 import com.example.pizzeriathiar.ui.login.LoginViewModel
@@ -12,7 +14,7 @@ import com.example.pizzeriathiar.ui.registro.PantallaRegistro
 import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 
 @Composable
-fun AppNavigation(navController: NavHostController){
+fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRepository){
     NavHost(
         navController = navController,
         startDestination = Screen.Login.route
@@ -24,9 +26,9 @@ fun AppNavigation(navController: NavHostController){
             )
         }
 
-        composable(Screen.Registro.route){
+        composable(Screen.Registro.route) {
             PantallaRegistro(
-                registroViewModel = RegistroViewModel(),
+                registroViewModel = RegistroViewModel(clienteRepository),
                 navController = navController
             )
         }
