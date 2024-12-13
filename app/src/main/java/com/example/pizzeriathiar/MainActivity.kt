@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
             PizzeriaThiarTheme {
                 val navController = rememberNavController()
                 //PantallaRegistro(RegistroViewModel(ClienteRepository(RetrofitInstance.clienteApi)),navController)
-                AppNavigation(navController = navController,(ClienteRepository(RetrofitInstance.clienteApi)))
+                AppNavigation(navController = navController,ClienteRepository(RetrofitInstance.clienteApi))
             }
         }
     }
