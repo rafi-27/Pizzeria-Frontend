@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -104,6 +105,7 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
     val cliente: ClienteDTO by registroViewModel.clienteDTO.observeAsState(ClienteDTO())
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
+    val loading: Boolean by registroViewModel.cargando.observeAsState(false)
 
     LazyColumn(
         modifier = Modifier
@@ -161,6 +163,12 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
                 cliente.password,
                 errorTipo.password
             )
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                if (loading) {
+                    CircularProgressIndicator(modifier = Modifier.padding(50.dp))
+                }
+            }
 
             Button(
                 onClick = {

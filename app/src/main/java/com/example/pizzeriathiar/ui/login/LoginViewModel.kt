@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel(){
     val loginDTO = MutableLiveData<LoginDTO>()
     val botonEncendido = MutableLiveData(false)
-
+    val cargando = MutableLiveData(false)
 
     fun onClienteChange(newCliente: LoginDTO){
         if (newCliente.email.isBlank()||newCliente.password.isBlank()) {
@@ -33,6 +33,7 @@ class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel
     }
 
     fun onLoginClick(callback: (Boolean) -> Unit){
+        cargando.value = true
         val clienteActual = loginDTO.value
         if (clienteActual != null) {
             viewModelScope.launch {
@@ -43,10 +44,12 @@ class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel
                         true -> {
                             loginDTO.value = result.getOrThrow()
                             callback(true)
+                            cargando.value=false
                         }
                         false -> {
                             Log.d("Login", "Error:$result")
                             callback(false)
+                            cargando.value=false
                         }
                     }
                 }

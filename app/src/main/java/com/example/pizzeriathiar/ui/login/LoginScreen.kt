@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -45,6 +47,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
     val clienteLogin: LoginDTO by loginViewModel.loginDTO.observeAsState(LoginDTO())
     val encender: Boolean by loginViewModel.botonEncendido.observeAsState(false)
     val ctexto = LocalContext.current
+    val loading: Boolean by loginViewModel.cargando.observeAsState(false)
 
     LazyColumn(
         modifier = Modifier
@@ -75,6 +78,12 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
                 clienteLogin.password
             )
 
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                if (loading) {
+                    CircularProgressIndicator(modifier = Modifier.padding(50.dp))
+                }
+            }
+
             Button(
                 onClick = {
                     loginViewModel.onLoginClick { success ->
@@ -97,7 +106,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(80.dp),
-                enabled = encender
+                enabled = encender && !loading
             ) {
                 Text("Login")
             }

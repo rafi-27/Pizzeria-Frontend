@@ -76,9 +76,9 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
     val cantidad by homeViewModel.cantidadCarrito.observeAsState(0)
 
-    val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.PIZZA }
-    val listaPastas = listaProductos.filter { it.tipo == TipoProducto.PASTA }
-    val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.BEBIDA }
+    val listaPizzas = listaProductos.filter { it.tipo == TipoProducto.pizza }
+    val listaPastas = listaProductos.filter { it.tipo == TipoProducto.pasta }
+    val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.bebida }
 
     val screnns = listOf(Screen.Home,Screen.Logout)
 
@@ -262,7 +262,7 @@ fun ProductoItem(
                         .fillMaxSize()
                         .padding(top = 5.dp)
                 )
-                if (producto.tipo == TipoProducto.PIZZA || producto.tipo == TipoProducto.PASTA) {
+                if (producto.tipo == TipoProducto.pizza || producto.tipo == TipoProducto.pasta) {
                     Text(
                         //el que hize yo:producto.listaIngredientesProducto.map { it.nombre }.joinToString(),
                         //pero android studio me chivo la manera que estoy usando acontinuacion:para mostrar solo el nombre sin nada mas
@@ -309,7 +309,7 @@ fun ProductoItem(
                                 .padding(5.dp)
                         )
                     }
-                    if (producto.tipo == TipoProducto.PIZZA || producto.tipo == TipoProducto.BEBIDA) {
+                    if (producto.tipo == TipoProducto.pizza || producto.tipo == TipoProducto.bebida) {
                         Column {
                             TextButton(onClick = { desplegar = true }) { Text(text = selectSize) }
                             DropdownMenu(
@@ -339,7 +339,7 @@ fun ProductoItem(
                     Log.d("tamanyo", "Valor: ${selectSize}")
                     //tamanyo != null || producto.tipo == TipoProducto.PASTA
                     var size: SIZE = SIZE.PEQUEÑA
-                    if (producto.tipo != TipoProducto.PASTA && selectSize != "Tamaño") {
+                    if (producto.tipo != TipoProducto.pasta && selectSize != "Tamaño") {
                         size = SIZE.valueOf(selectSize)
                     }
 
@@ -350,7 +350,7 @@ fun ProductoItem(
                             "Se han añadido x${cantidad}, ${producto.nombre}",
                             Toast.LENGTH_SHORT
                         ).show()
-                    }, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.PASTA) {
+                    }, enabled = selectSize != "Tamaño" || producto.tipo == TipoProducto.pasta) {
                         Text(
                             text = "+",
                             fontSize = 20.sp

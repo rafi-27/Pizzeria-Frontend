@@ -16,6 +16,7 @@ class RegistroViewModel(private val clienteRepository: ClienteRepository):ViewMo
     val clienteDTO = MutableLiveData<ClienteDTO>()
     val botonEncendido = MutableLiveData(false)
     val mensajeDeError = MutableLiveData<ErrorMessege>()
+    val cargando = MutableLiveData(false)
 
     //Funcion para concatenar
     fun onClienteChange(newCliente: ClienteDTO){
@@ -33,6 +34,7 @@ class RegistroViewModel(private val clienteRepository: ClienteRepository):ViewMo
     }
 
     fun onRegistrarClick(){
+        cargando.value = true
         val clienteActual = clienteDTO.value
         if (clienteActual != null) {
             viewModelScope.launch {
@@ -42,9 +44,11 @@ class RegistroViewModel(private val clienteRepository: ClienteRepository):ViewMo
                     when (result.isSuccess) {
                         true -> {
                             clienteDTO.value = result.getOrThrow()
+                            cargando.value = false
                         }
                         false -> {
                             Log.d("REGISTRO", "Error:$result")
+                            cargando.value = false
                         }
                     }
                 }
