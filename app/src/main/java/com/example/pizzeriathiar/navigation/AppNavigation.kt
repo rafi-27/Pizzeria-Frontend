@@ -40,7 +40,11 @@ fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRep
             )
         }
 
-        composable(Screen.Logout.route) {  }
-
+        composable(Screen.Logout.route) {
+            PantallaLogin(
+                loginViewModel = LoginViewModel(),
+                navHostController = navController
+            )
+        }
     }
 }

@@ -74,7 +74,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
             )
 
             Button(onClick = {
-                loginViewModel.onRegistrarClick()
+                loginViewModel.onLoginClick()
                 navHostController.navigate(Screen.Home.route)
                 //loginViewModel.bloqueoOnclickLogin()
             },

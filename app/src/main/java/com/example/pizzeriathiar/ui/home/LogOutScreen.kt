@@ -9,9 +9,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavHostController
+import com.example.pizzeriathiar.navigation.Screen
 
 @Composable
-fun SimpleAlertDialog() {
+fun SimpleAlertDialog(navHostController: NavHostController) {
 // Estado para controlar si se muestra el diálogo
     var showDialog by remember { mutableStateOf(false) }
 // Botón que activa el diálogo
@@ -31,6 +33,7 @@ fun SimpleAlertDialog() {
             confirmButton = {
                 TextButton(onClick = {
                     showDialog = false
+                    navHostController.navigate(Screen.Login.route)
                 }) {
                     Text("Sí")
                 }
