@@ -49,6 +49,7 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
     val ctexto = LocalContext.current
     val loading: Boolean by loginViewModel.cargando.observeAsState(false)
 
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -86,27 +87,21 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
 
             Button(
                 onClick = {
-                    loginViewModel.onLoginClick { success ->
-                        if (success) {
+                    loginViewModel.onLoginClick { value ->
+                        if (value) {
                             Toast.makeText(
-                                ctexto,
-                                "Login correcto.",
-                                Toast.LENGTH_SHORT
+                                ctexto, "Login correcto.", Toast.LENGTH_SHORT
                             ).show()
                             navHostController.navigate(Screen.Home.route)
                         } else {
                             Toast.makeText(
-                                ctexto,
-                                "Error en el login.",
-                                Toast.LENGTH_SHORT
+                                ctexto, "Error en el login.", Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .fillMaxWidth()
-                    .padding(80.dp),
-                enabled = encender && !loading
+                    .padding(80.dp), enabled = encender && !loading
             ) {
                 Text("Login")
             }
@@ -118,26 +113,23 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
                     .padding(bottom = 10.dp)
             ) {
                 Text(text = "No tienes cuenta aún ")
-                Text(
-                    text = "regístrate aquí.",
+                Text(text = "regístrate aquí.",
                     style = TextStyle(
                         color = Color.Blue,
                         fontSize = 18.sp,
                         textDecoration = TextDecoration.Underline
                     ),
-                    modifier = Modifier.clickable { navHostController.navigate(Screen.Registro.route) }
-                )
+                    modifier = Modifier.clickable { navHostController.navigate(Screen.Registro.route) })
             }
         }
     }
 }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun PantallaPrincipalLoginPreview() {
-        val navController = rememberNavController()
-        AppNavigation(
-            navController = navController,
-            (ClienteRepository(RetrofitInstance.clienteApi))
-        )
-    }
+@Preview(showBackground = true)
+@Composable
+fun PantallaPrincipalLoginPreview() {
+    val navController = rememberNavController()
+    AppNavigation(
+        navController = navController, (ClienteRepository(RetrofitInstance.clienteApi))
+    )
+}
