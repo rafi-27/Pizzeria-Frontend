@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -368,13 +369,32 @@ fun Drawer(
     scope: CoroutineScope,
     items: List<Screen>
 ) {
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
     ModalDrawerSheet(modifier = Modifier.width(250.dp)) {
         Column {
             items.forEach { screen ->
-                DrawerItem(navHostController, screen)
-                scope.launch { drawerState.close() }
+                NavigationDrawerItem(
+                    label = { Text(screen.route) },
+                    selected = false,
+                    onClick = {
+                        if (screen == Screen.Logout) {
+                            showLogoutDialog = true
+                        } else {
+                            navHostController.navigate(screen.route) { launchSingleTop = true }
+                            scope.launch { drawerState.close() }
+                        }
+                    }
+                )
             }
         }
+    }
+
+    if (showLogoutDialog) {
+        SimpleAlertDialog(
+            navHostController = navHostController,
+            onDismiss = { showLogoutDialog = false }
+        )
     }
 }
 

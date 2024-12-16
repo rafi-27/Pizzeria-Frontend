@@ -1,7 +1,9 @@
 package com.example.pizzeriathiar.ui.login
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +19,10 @@ import kotlinx.coroutines.withContext
 //import kotlinx.coroutines.delay
 //import kotlinx.coroutines.launch
 
-
 class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel(){
     val loginDTO = MutableLiveData<LoginDTO>()
     val botonEncendido = MutableLiveData(false)
-    //val ctexto = LocalContext.current
+
 
     fun onClienteChange(newCliente: LoginDTO){
         if (newCliente.email.isBlank()||newCliente.password.isBlank()) {
@@ -31,7 +32,7 @@ class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel
         loginDTO.value=newCliente;
     }
 
-    fun onLoginClick(){
+    fun onLoginClick(callback: (Boolean) -> Unit){
         val clienteActual = loginDTO.value
         if (clienteActual != null) {
             viewModelScope.launch {
@@ -41,24 +42,17 @@ class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel
                     when (result.isSuccess) {
                         true -> {
                             loginDTO.value = result.getOrThrow()
-                            Log.d("Login", "Error:$result")
+                            callback(true)
                         }
                         false -> {
                             Log.d("Login", "Error:$result")
+                            callback(false)
                         }
                     }
                 }
             }
         }
     }
-
-    /**
-     * Toast.makeText(
-     *                                 ctexto,
-     *                                 "Login correcto.",
-     *                                 Toast.LENGTH_SHORT
-     *                             ).show()
-     */
 
 //    suspend fun esperarCincoSegundos(){
 //        Log.d("Hilos","Hilo principal bloqueado durante 10 segundos.")

@@ -21,7 +21,7 @@ fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRep
     ){
         composable(Screen.Login.route){
             PantallaLogin(
-                loginViewModel = LoginViewModel(),
+                loginViewModel = LoginViewModel(clienteRepository),
                 navHostController = navController
             )
         }
@@ -42,7 +42,7 @@ fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRep
 
         composable(Screen.Logout.route) {
             PantallaLogin(
-                loginViewModel = LoginViewModel(),
+                loginViewModel = LoginViewModel(clienteRepository),
                 navHostController = navController
             )
         }
