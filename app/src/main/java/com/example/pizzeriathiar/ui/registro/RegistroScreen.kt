@@ -1,6 +1,7 @@
 package com.example.pizzeriathiar.ui.registro
 
 import android.view.textclassifier.TextLinks.TextLink
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -107,6 +109,7 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
     val encender: Boolean by registroViewModel.botonEncendido.observeAsState(false)
     val errorTipo: ErrorMessege by registroViewModel.mensajeDeError.observeAsState(ErrorMessege())
     val loading: Boolean by registroViewModel.cargando.observeAsState(false)
+    val ctexto = LocalContext.current
 
     LazyColumn(
         modifier = Modifier
@@ -173,8 +176,19 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
 
             Button(
                 onClick = {
-                    registroViewModel.onRegistrarClick()
-                    navController.navigate(Screen.Home.route)
+                    registroViewModel.onRegistrarClick {
+                        hecho ->
+                        if (hecho){
+                            Toast.makeText(
+                                ctexto, "Registro correcto", Toast.LENGTH_SHORT
+                            ).show()
+                            navController.navigate(Screen.Home.route)
+                        }else{
+                            Toast.makeText(
+                                ctexto, "Registro incorrecto", Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp, start = 70.dp, end = 70.dp), enabled = encender

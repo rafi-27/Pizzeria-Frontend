@@ -33,7 +33,7 @@ class RegistroViewModel(private val clienteRepository: ClienteRepository):ViewMo
         clienteDTO.value=newCliente;
     }
 
-    fun onRegistrarClick(){
+    fun onRegistrarClick(callback: (Boolean) -> Unit){
         cargando.value = true
         val clienteActual = clienteDTO.value
         if (clienteActual != null) {
@@ -45,10 +45,12 @@ class RegistroViewModel(private val clienteRepository: ClienteRepository):ViewMo
                         true -> {
                             clienteDTO.value = result.getOrThrow()
                             cargando.value = false
+                            callback(true)
                         }
                         false -> {
                             Log.d("REGISTRO", "Error:$result")
                             cargando.value = false
+                            callback(false)
                         }
                     }
                 }
