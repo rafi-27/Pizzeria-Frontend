@@ -15,8 +15,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.PizzeriaThiarTheme
 import com.example.pizzeriathiar.data.network.RetrofitInstance
 import com.example.pizzeriathiar.data.repositories.ClienteRepository
+import com.example.pizzeriathiar.data.repositories.ProductoRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
-import com.example.pizzeriathiar.ui.home.HomeViewModel
+import com.example.pizzeriathiar.ui.home.HomeViewModelprivate
 import com.example.pizzeriathiar.ui.home.PantallaProducto
 import com.example.pizzeriathiar.ui.login.LoginViewModel
 import com.example.pizzeriathiar.ui.login.PantallaLogin
@@ -31,7 +32,8 @@ class MainActivity : ComponentActivity() {
             PizzeriaThiarTheme {
                 val navController = rememberNavController()
                 //PantallaRegistro(RegistroViewModel(ClienteRepository(RetrofitInstance.clienteApi)),navController)
-                AppNavigation(navController = navController,ClienteRepository(RetrofitInstance.clienteApi))
+                AppNavigation(navController = navController,ClienteRepository(RetrofitInstance.clienteApi), ProductoRepository(RetrofitInstance.productoApi)
+                )
             }
         }
     }

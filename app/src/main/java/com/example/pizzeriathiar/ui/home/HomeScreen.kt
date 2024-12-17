@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
@@ -64,6 +65,7 @@ import com.example.pizzeriathiar.data.model.SIZE
 import com.example.pizzeriathiar.data.model.TipoProducto
 import com.example.pizzeriathiar.data.network.RetrofitInstance
 import com.example.pizzeriathiar.data.repositories.ClienteRepository
+import com.example.pizzeriathiar.data.repositories.ProductoRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
@@ -72,7 +74,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostController) {
+fun PantallaProducto(homeViewModel: HomeViewModelprivate, navHostController: NavHostController) {
     val listaProductos: List<ProductoDTO> by homeViewModel.productosDTO.observeAsState(listOf())
     val cantidad by homeViewModel.cantidadCarrito.observeAsState(0)
 
@@ -80,23 +82,26 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
     val listaPastas = listaProductos.filter { it.tipo == TipoProducto.pasta }
     val listaBebidas = listaProductos.filter { it.tipo == TipoProducto.bebida }
 
-    val screnns = listOf(Screen.Home,Screen.Logout)
+    val loading: Boolean by homeViewModel.cargando.observeAsState(false)
+
+    val screnns = listOf(Screen.Home, Screen.Logout)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerContent = { Drawer(navHostController,drawerState,scope, screnns) }
+        drawerContent = { Drawer(navHostController, drawerState, scope, screnns) }
     ) {
         Scaffold(
             topBar = { topBarMenu(cantidad, { scope.launch { drawerState.open() } }) },
-            content = {innerPadding ->
+            content = { innerPadding ->
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
                         .background(color = Color(0xFFf7eeec))
                 ) {
+                    Log.d("PRODUCTOS", "$listaProductos")
                     item {
                         Text(
                             text = "Pizzas",
@@ -108,6 +113,16 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
                         )
                     }
 
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            if (loading) {
+                                CircularProgressIndicator(modifier = Modifier.padding(50.dp))
+                            }
+                        }
+                    }
                     items(listaPizzas) { producto ->
                         ProductoItem(
                             producto,
@@ -178,14 +193,16 @@ fun PantallaProducto(homeViewModel: HomeViewModel, navHostController: NavHostCon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun topBarMenu(cantidad:Int,onClickMenu: () -> Unit){
+fun topBarMenu(cantidad: Int, onClickMenu: () -> Unit) {
     TopAppBar(
-        navigationIcon = {  IconButton(onClick = { onClickMenu() }) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = ""
-            )
-        } },
+        navigationIcon = {
+            IconButton(onClick = { onClickMenu() }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = ""
+                )
+            }
+        },
         modifier = Modifier.fillMaxWidth(),
         title = {
             Row(
@@ -266,7 +283,7 @@ fun ProductoItem(
                     Text(
                         //el que hize yo:producto.listaIngredientesProducto.map { it.nombre }.joinToString(),
                         //pero android studio me chivo la manera que estoy usando acontinuacion:para mostrar solo el nombre sin nada mas
-                        producto.listaIngredientesProducto.joinToString { it.nombre },
+                        producto.ingredientes.joinToString { it.nombre },
                         textAlign = TextAlign.Left,
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier
@@ -329,16 +346,16 @@ fun ProductoItem(
                                     text = { Text(SIZE.MEDIANA.toString()) })
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectSize = SIZE.PEQUEÑA.toString()
+                                        selectSize = SIZE.PEQUENA.toString()
                                         desplegar = false
                                     },
-                                    text = { Text(SIZE.PEQUEÑA.toString()) })
+                                    text = { Text(SIZE.PEQUENA.toString()) })
                             }
                         }
                     }
                     Log.d("tamanyo", "Valor: ${selectSize}")
                     //tamanyo != null || producto.tipo == TipoProducto.PASTA
-                    var size: SIZE = SIZE.PEQUEÑA
+                    var size: SIZE = SIZE.PEQUENA
                     if (producto.tipo != TipoProducto.pasta && selectSize != "Tamaño") {
                         size = SIZE.valueOf(selectSize)
                     }
@@ -361,6 +378,7 @@ fun ProductoItem(
         }
     }
 }
+
 //-------------------------------------------------------------------------------------------------------------//
 @Composable
 fun Drawer(
@@ -405,7 +423,7 @@ fun DrawerItem(navHostController: NavHostController, screen: Screen) {
         label = { Text(screen.route) },
         selected = false,
         onClick = {
-            navHostController.navigate(screen.route) {launchSingleTop=true}
+            navHostController.navigate(screen.route) { launchSingleTop = true }
         }
     )
 }
@@ -416,5 +434,5 @@ fun DrawerItem(navHostController: NavHostController, screen: Screen) {
 @Composable
 fun PantallaPrincipalHomePreview() {
     val navController = rememberNavController()
-    AppNavigation(navController = navController,(ClienteRepository(RetrofitInstance.clienteApi)))
+    AppNavigation(navController = navController, (ClienteRepository(RetrofitInstance.clienteApi)), ProductoRepository(RetrofitInstance.productoApi))
 }

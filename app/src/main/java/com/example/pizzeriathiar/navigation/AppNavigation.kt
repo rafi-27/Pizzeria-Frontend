@@ -6,7 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pizzeriathiar.data.network.ClienteApiService
 import com.example.pizzeriathiar.data.repositories.ClienteRepository
-import com.example.pizzeriathiar.ui.home.HomeViewModel
+import com.example.pizzeriathiar.data.repositories.ProductoRepository
+import com.example.pizzeriathiar.ui.home.HomeViewModelprivate
 import com.example.pizzeriathiar.ui.home.PantallaProducto
 import com.example.pizzeriathiar.ui.login.LoginViewModel
 import com.example.pizzeriathiar.ui.login.PantallaLogin
@@ -14,7 +15,7 @@ import com.example.pizzeriathiar.ui.registro.PantallaRegistro
 import com.example.pizzeriathiar.ui.registro.RegistroViewModel
 
 @Composable
-fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRepository){
+fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRepository,productoRepository: ProductoRepository){
     NavHost(
         navController = navController,
         startDestination = Screen.Login.route
@@ -35,7 +36,7 @@ fun AppNavigation(navController: NavHostController,clienteRepository: ClienteRep
 
         composable(Screen.Home.route){
             PantallaProducto(
-                homeViewModel = HomeViewModel(),
+                homeViewModel = HomeViewModelprivate(productoRepository),
                 navHostController = navController
             )
         }

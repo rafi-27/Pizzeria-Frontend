@@ -36,6 +36,7 @@ import com.example.pizzeriathiar.R
 import com.example.pizzeriathiar.data.model.LoginDTO
 import com.example.pizzeriathiar.data.network.RetrofitInstance
 import com.example.pizzeriathiar.data.repositories.ClienteRepository
+import com.example.pizzeriathiar.data.repositories.ProductoRepository
 import com.example.pizzeriathiar.navigation.AppNavigation
 import com.example.pizzeriathiar.navigation.Screen
 import com.example.pizzeriathiar.ui.registro.TextoField
@@ -130,6 +131,6 @@ fun PantallaLogin(loginViewModel: LoginViewModel, navHostController: NavHostCont
 fun PantallaPrincipalLoginPreview() {
     val navController = rememberNavController()
     AppNavigation(
-        navController = navController, (ClienteRepository(RetrofitInstance.clienteApi))
+        navController = navController, (ClienteRepository(RetrofitInstance.clienteApi)), ProductoRepository(RetrofitInstance.productoApi)
     )
 }
