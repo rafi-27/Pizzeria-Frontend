@@ -180,12 +180,12 @@ fun PantallaRegistro(registroViewModel: RegistroViewModel, navController: NavHos
                         hecho ->
                         if (hecho){
                             Toast.makeText(
-                                ctexto, "Registro correcto", Toast.LENGTH_SHORT
+                                ctexto, "Registro correcto.", Toast.LENGTH_SHORT
                             ).show()
                             navController.navigate(Screen.Home.route)
                         }else{
                             Toast.makeText(
-                                ctexto, "Registro incorrecto", Toast.LENGTH_SHORT
+                                ctexto, "Registro incorrecto, posiblemente el mail ya existe.", Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
