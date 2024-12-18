@@ -7,6 +7,5 @@ class ProductoRepository(private val apiService: ProductoApiServices) {
     suspend fun getProductos(): List<ProductoDTO>
     {
         return apiService.getProductos()
-
     }
 }
