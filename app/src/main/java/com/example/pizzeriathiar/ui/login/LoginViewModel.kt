@@ -37,8 +37,7 @@ class LoginViewModel(private val clienteRepository: ClienteRepository):ViewModel
         val clienteActual = loginDTO.value
         if (clienteActual != null) {
             viewModelScope.launch {
-                val result =
-                    clienteRepository.loginCliente(clienteActual)
+                val result = clienteRepository.loginCliente(clienteActual)
                 withContext(Dispatchers.Main) {
                     when (result.isSuccess) {
                         true -> {

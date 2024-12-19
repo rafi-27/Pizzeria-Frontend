@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
 
-class HomeViewModelprivate(val productoRepository:ProductoRepository): ViewModel() {
+class HomeViewModelprivate(private val productoRepository:ProductoRepository): ViewModel() {
     val productosDTO = MutableLiveData<List<ProductoDTO>>()
     var cantidadCarrito = MutableLiveData<Int>(0)
     var pedido = MutableLiveData<PedidoDTO>(null)
